@@ -1,0 +1,39 @@
+{
+  "manifest_version": 2,
+  "minimum_chrome_version": "34",
+  "name": "Medium Code",
+  "version": "0.0.1",
+  "description": "Extend the Medium interface to automatically add and edit GitHub gists, without having to leave the editor.",
+  "icons": {
+    "48": "assets/icon.png",
+    "128": "assets/icon.png"
+  },
+  "author": "Manuel Dell'Elce",
+  "short_name": "medium-code",
+  "background": {
+    "page": "background/background.html",
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "assets/icon.png",
+      "38": "assets/icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://medium.com/new-story",
+        "https://medium.com/*/edit"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": ["app/*.*"]
+}

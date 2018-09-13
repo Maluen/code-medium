@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "medium-code-extension",
+  "name": "code-medium",
   "version": "0.0.1",
   "description": "",
   "scripts": {
@@ -18,7 +18,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^9.0.0",
     "babel-loader": "^8.0.2",
-    "babel-plugin-styled-components": "^1.6.3",
+    "babel-plugin-styled-components": "^1.6.4",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
@@ -38,8 +38,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "brace": "^0.11.1",
+    "lodash.memoize": "^4.1.2",
+    "noty": "^3.2.0-beta",
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
+    "react-ace": "^6.1.4",
     "react-dom": "^16.5.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",

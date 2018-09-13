@@ -84,21 +84,24 @@ class RPCService {
       }
 
       if (message.type === 'request') {
-        if (!message.topic) {
-          throw new Error('request handling: message topic is not set');
-        }
-        const handler = this.requestHandlers[message.topic];
-        if (!handler) {
-          throw new Error(`${message.topic} has no handler`);
-        }
         Promise.resolve()
-          .then(() => handler(message.data || {}))
+          .then(() => {
+            if (!message.topic) {
+              throw new Error('request handling: message topic is not set');
+            }
+            const handler = this.requestHandlers[message.topic];
+            if (!handler) {
+              throw new Error(`${message.topic} has no handler`);
+            }
+            return handler;
+          })
+          .then(handler => handler(message.data || {}))
           .then(data => {
             // NOTE: invert message.from and message.to to send back the message
-            this.sendResponse(message.from, message.tabId, message.id, undefined, data);
+            return this.sendResponse(message.from, message.tabId, message.id, undefined, data);
           })
           .catch(err => {
-            this.sendResponse(message.from, message.tabId, message.id, err);
+            return this.sendResponse(message.from, message.tabId, message.id, err);
           });
         return;
       }
@@ -107,7 +110,7 @@ class RPCService {
     this.sendFromContext(message.from, message);
   }
 
-  sendRequest(toContext, tabId, topic, data = {}) {
+  sendRequest(toContext, tabId, topic, data) {
     return new Promise((resolve, reject) => {
       try {
         const id = uuidv4();
@@ -127,8 +130,8 @@ class RPCService {
     });
   }
 
-  sendResponse(toContext, tabId, id, err, data = {}) {
-    this.sendToContext(toContext, {
+  sendResponse(toContext, tabId, id, err, data) {
+    return this.sendToContext(toContext, {
       tabId,
       id,
       type: 'response',
@@ -150,10 +153,9 @@ class RPCService {
       throw new Error(`fromContext can't be equal to current context: ${fromContext}`);
     }
     if (fromContextIndex < this.contextIndex) {
-      this.sendDown(message);
-    } else {
-      this.sendUp(message);
+      return this.sendDown(message);
     }
+    return this.sendUp(message);
   }
 
   sendToContext(toContext, message) {
@@ -165,10 +167,9 @@ class RPCService {
       throw new Error(`toContext can't be equal to current context: ${toContext}`);
     }
     if (toContextIndex < this.contextIndex) {
-      this.sendUp(message);
-    } else {
-      this.sendDown(message);
+      return this.sendUp(message);
     }
+    return this.sendDown(message);
   }
 
   sendDown() {

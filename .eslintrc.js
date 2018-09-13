@@ -33,6 +33,9 @@ module.exports = {
     "import/no-duplicates": 0,
     "class-methods-use-this": 0,
     "no-await-in-loop": 0,
-    "prefer-destructuring": 1
+    "prefer-destructuring": 1,
+    "react/button-has-type": 0,
+    "object-curly-newline": 0,
+    "no-confusing-arrow": 0
   }
 };

@@ -21,7 +21,7 @@ class BackgroundRPCService extends RPCService {
     if (typeof message.tabId === 'undefined' || message.tabId === null) {
       throw new Error('message.tab.id must be set');
     }
-    browser.tabs.sendMessage(message.tabId, message);
+    return browser.tabs.sendMessage(message.tabId, message);
   }
 
   sendUp() {

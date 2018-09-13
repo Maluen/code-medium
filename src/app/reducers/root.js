@@ -6,6 +6,10 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
+  if (action.type === 'ROOT_RESET') {
+    state = undefined;
+  }
+
   return appReducer(state, action);
 };
 

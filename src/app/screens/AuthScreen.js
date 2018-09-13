@@ -1,67 +1,83 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as authActions from '../actions/auth';
+import Loading from '../components/Loading';
+
+const styles = {
+  container: css`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+
+  button: css`
+    background-color: #2b414e;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      background: url('/app/assets/github.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      width: 35px;
+      height: 35px;
+      vertical-align: middle;
+      margin-right: 10px;
+    };
+
+    &:hover {
+      opacity: 0.8;
+    }
+  `,
+};
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  ${styles.container}
 `;
 
-const LoginButton = styled.button`
-  background-color: #2b414e;
-  color: white;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  padding: 15px;
-  cursor: pointer;
-
-  &:before {
-    content: '';
-    display: inline-block;
-    background: url('assets/github.png');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    width: 35px;
-    height: 35px;
-    vertical-align: middle;
-    margin-right: 10px;
-  };
-
-  &:hover {
-    opacity: 0.8;
-  }
+const Button = styled.button`
+  ${styles.button}
 `;
 
 class AuthScreen extends React.Component {
   static propTypes = {
+    loggingIn: PropTypes.bool.isRequired,
+
     authActions: PropTypes.object.isRequired,
   };
 
   handleLoginClick = () => {
-    this.props.authActions.login();
+    this.props.authActions.login()
+      .then(() => {
+        this.props.history.push(this.props.location.state.from.pathname || '/');
+      });
   }
 
   render() {
     return (
       <Container>
-        <LoginButton onClick={this.handleLoginClick}>
+        {this.props.loggingIn ? <Loading /> : ''}
+        <Button onClick={this.handleLoginClick}>
           Login with GitHub
-        </LoginButton>
+        </Button>
       </Container>
     );
   }
 }
 
-const stateToProps = ({  }) => ({
-
+const stateToProps = ({ auth }) => ({
+  loggingIn: auth.loggingIn,
 });
 
 const dispatchToProps = dispatch => ({

@@ -23,13 +23,14 @@ class ContentRPCService extends RPCService {
 
   sendDown(message) {
     // send to app
-    document.querySelector(`.${namespace('iframe')}`).contentWindow
-      .postMessage(message, '*');
+    const iframe = document.querySelector(`.${namespace('app')} iframe`);
+    const iframeWindow = iframe && iframe.contentWindow;
+    if (iframeWindow) iframeWindow.postMessage(message, '*');
   }
 
   sendUp(message) {
     // send to background
-    browser.runtime.sendMessage(message);
+    return browser.runtime.sendMessage(message);
   }
 }
 

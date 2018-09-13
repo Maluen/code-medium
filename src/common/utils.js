@@ -70,3 +70,15 @@ export function createServices(array) {
 
   return { services, start };
 }
+
+export function getUrlQuery(url) {
+  const parsedUrl = new URL(url);
+  return parsedUrl.search
+    .replace('?', '')
+    .split('&')
+    .reduce((currentResult, string) => {
+      const [name, value] = string.split('=');
+      currentResult[decodeURIComponent(name)] = decodeURIComponent(value);
+      return currentResult;
+    }, {});
+}

@@ -19,6 +19,7 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     'content/content': './src/content/content.js',
+    'content/content_iframe': './src/content/content_iframe.js',
     'background/background': './src/background/background.js',
     'app/App': './src/app/App.js',
   },

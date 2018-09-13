@@ -9,10 +9,10 @@
     "128": "assets/icon.png"
   },
   "author": "Manuel Dell'Elce",
-  "short_name": "medium-code",
+  "short_name": "code-medium",
   "background": {
     "page": "background/background.html",
-    "persistent": false
+    "persistent": true
   },
   "browser_action": {
     "default_icon": {
@@ -33,7 +33,23 @@
         "content/content.css"
       ],
       "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://medium.com/media/*"
+      ],
+      "js": [
+        "content/content_iframe.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_idle"
     }
   ],
-  "web_accessible_resources": ["app/*.*"]
+  "web_accessible_resources": ["app/*.*"],
+  "permissions": [
+    "identity",
+    "storage",
+    "https://github.com/*",
+    "https://gist.github.com/*"
+  ]
 }

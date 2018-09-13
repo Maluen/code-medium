@@ -1,10 +1,10 @@
 import { createServices } from '../../common/utils';
 import AppRPCService from './AppRPCService';
-import AuthService from './AuthService';
+import NotyService from './NotyService';
 
 const { services, start } = createServices([
   ['rpc', AppRPCService],
-  ['auth', AuthService],
+  ['noty', NotyService],
 ]);
 
 export default services;

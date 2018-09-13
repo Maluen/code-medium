@@ -12,6 +12,7 @@ import Loading from '../components/Loading';
 import HomeScreen from './HomeScreen';
 import AuthScreen from './AuthScreen';
 import GistScreen from './GistScreen';
+import ErrorScreen from './ErrorScreen';
 
 const styles = {
   container: css`
@@ -128,8 +129,9 @@ class ScreensRoot extends React.Component {
         </Header>
         <Content>
           <Switch>
-            <Route authed={authed} path="/auth" component={AuthScreen} />
+            <Route path="/auth" component={AuthScreen} />
             <PrivateRoute authed={authed} path="/gist/:gistId?/:gistName?" component={GistScreen} />
+            <Route path="/error/:errorType?" component={ErrorScreen} />
 
             <Route path="/" component={HomeScreen} />
           </Switch>

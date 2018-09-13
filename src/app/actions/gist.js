@@ -1,8 +1,10 @@
 import services from '../services';
 import { CONTEXT } from '../../common/services/RPCService';
+import { getErrorMessage } from '../../common/utils';
 
 const RETRY_DELAY = 3000;
 const MAX_RETRIES = -1;
+const UNRETRYABLE_ERROR_TYPES = ['unauthorized', 'not found'];
 
 export function fetch(gistId, gistName) {
   return (dispatch) => {
@@ -17,10 +19,13 @@ export function fetch(gistId, gistName) {
           return gist;
         })
         .catch(err => {
-          const errorMessage = err instanceof Error ? err.message : String(err);
           console.error(err);
 
-          if (MAX_RETRIES < 0 || retries < MAX_RETRIES) {
+          const errorMessage = getErrorMessage(err);
+          const errorType = (errorMessage || '').toLowerCase().trim();
+          const isRetryable = UNRETRYABLE_ERROR_TYPES.indexOf(errorType) === -1;
+
+          if (isRetryable && (MAX_RETRIES < 0 || retries < MAX_RETRIES)) {
             // retry
             const retrySeconds = Math.round(RETRY_DELAY / 1000);
             const timeWord = retrySeconds === 1 ? 'second' : 'seconds';
@@ -41,7 +46,7 @@ export function fetch(gistId, gistName) {
             type: 'GIST_FETCH_FAILURE',
             errorMessage,
           });
-          return Promise.reject(err);
+          return Promise.reject(!isRetryable ? errorType : 'too many retries');
         });
     };
     return tryOne();
@@ -59,7 +64,7 @@ export function create(data) {
         return gist;
       })
       .catch((err) => {
-        const errorMessage = err instanceof Error ? err.message : String(err);
+        const errorMessage = getErrorMessage(err);
         dispatch({
           type: 'GIST_CREATE_FAILURE',
           errorMessage,
@@ -82,7 +87,7 @@ export function edit(data) {
         return gist;
       })
       .catch((err) => {
-        const errorMessage = err instanceof Error ? err.message : String(err);
+        const errorMessage = getErrorMessage(err);
         dispatch({
           type: 'GIST_EDIT_FAILURE',
           errorMessage,
@@ -105,7 +110,7 @@ export function deleteGist(gistId) {
         return services.rpc.sendRequest(CONTEXT.content, null, 'app.gistDeleted');
       })
       .catch((err) => {
-        const errorMessage = err instanceof Error ? err.message : String(err);
+        const errorMessage = getErrorMessage(err);
         dispatch({
           type: 'GIST_DELETE_FAILURE',
           errorMessage,

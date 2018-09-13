@@ -36,6 +36,7 @@ module.exports = {
     "prefer-destructuring": 1,
     "react/button-has-type": 0,
     "object-curly-newline": 0,
-    "no-confusing-arrow": 0
+    "no-confusing-arrow": 0,
+    "spaced-comment": 1
   }
 };

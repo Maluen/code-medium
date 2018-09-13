@@ -3,19 +3,21 @@ import uuidv4 from 'uuid/v4';
 import config from '../../common/config';
 import { getUrlQuery } from '../../common/utils';
 
+const redirectUrl = `https://${config.appId}.chromiumapp.org/`;
+
 const scope = 'gist';
 const getAuthUrl = state => 'https://github.com/login/oauth/authorize?' +
   `client_id=${encodeURIComponent(config.auth.clientId)}&` +
   `scope=${encodeURIComponent(scope)}&` +
   `state=${encodeURIComponent(state)}&` +
-  `redirect_uri=${browser.identity.getRedirectURL()}`;
+  `redirect_uri=${redirectUrl}`;
 
 const getAccessTokenUrl = (code, state) => 'https://github.com/login/oauth/access_token?' +
   `client_id=${encodeURIComponent(config.auth.clientId)}&` +
   `client_secret=${encodeURIComponent(config.auth.clientSecret)}&` +
   `code=${encodeURIComponent(code)}&` +
   `state=${encodeURIComponent(state)}&` +
-  `redirect_uri=${browser.identity.getRedirectURL()}`;
+  `redirect_uri=${redirectUrl}`;
 
 function getAuthCode() {
   const state = uuidv4();
@@ -49,7 +51,11 @@ function revokeAccessToken(accessToken) {
       Authorization: `Basic ${btoa(config.auth.clientId + ':' + config.auth.clientSecret)}`,
     },
   }).then(response => {
-    if (!response.ok) throw new Error(response.statusText);
+    // 404 here just means that the user is already logged out
+    // e.g. they disconnected the application directly in github
+    if (!response.ok && response.status !== 404) {
+      throw new Error(response.statusText);
+    }
     return response;
   });
 }

@@ -1,5 +1,6 @@
 import services from '../services';
 import { CONTEXT } from '../../common/services/RPCService';
+import { getErrorMessage } from '../../common/utils';
 
 export function fetch() {
   return (dispatch) => {
@@ -15,7 +16,7 @@ export function fetch() {
         return loggedIn;
       })
       .catch(err => {
-        const errorMessage = err instanceof Error ? err.message : String(err);
+        const errorMessage = getErrorMessage(err);
         dispatch({
           type: 'AUTH_FETCH_FAILURE',
           errorMessage,
@@ -38,7 +39,7 @@ export function login() {
         //console.log('login success');
       })
       .catch((err) => {
-        const errorMessage = err instanceof Error ? err.message : String(err);
+        const errorMessage = getErrorMessage(err);
         dispatch({
           type: 'AUTH_LOGIN_FAILURE',
           errorMessage,
@@ -62,7 +63,7 @@ export function logout() {
         return services.rpc.sendRequest(CONTEXT.content, null, 'app.loggedOut');
       })
       .catch((err) => {
-        const errorMessage = err instanceof Error ? err.message : String(err);
+        const errorMessage = getErrorMessage(err);
         dispatch({
           type: 'AUTH_LOGOUT_FAILURE',
           errorMessage,

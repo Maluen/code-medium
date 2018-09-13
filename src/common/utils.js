@@ -82,3 +82,12 @@ export function getUrlQuery(url) {
       return currentResult;
     }, {});
 }
+
+export function getErrorMessage(err) {
+  if (typeof err === 'object' && err !== null) {
+    if (err.message) return err.message;
+    return JSON.stringify(err);
+  }
+
+  return String(err);
+}

@@ -252,6 +252,9 @@ class GistScreen extends React.Component {
             name: gistName,
             code: gist.files[gistName].content,
           });
+        })
+        .catch(errorType => {
+          this.props.history.push(`/error/${errorType}`);
         });
     } else {
       // create

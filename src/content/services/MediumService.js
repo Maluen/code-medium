@@ -64,7 +64,7 @@ class MediumService {
     this.commandsEl = await waitForEl('.inlineTooltip-menu');
 
     const buttonEl = this.commandsEl.querySelector('[aria-label="Add an embed"]').cloneNode(true);
-    const title = 'Add github gist';
+    const title = 'Add a GitHub Gist';
     buttonEl.classList.add(namespace('button'));
     buttonEl.setAttribute('title', title);
     buttonEl.setAttribute('aria-label', title);

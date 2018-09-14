@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import styled, { css } from 'styled-components';
 
 import services from '../services';
+import config from '../../common/config';
 import * as authActions from '../actions/auth';
 import Loading from '../components/Loading';
 import HomeScreen from './HomeScreen';
@@ -42,6 +43,13 @@ const styles = {
     flex-grow: 1;
     display: flex;
   `,
+
+  footer: css`
+    margin-left: auto;
+    padding: 10px;
+    padding-right: 20px;
+    font-size: 10px;
+  `,
 };
 
 const Container = styled.div`
@@ -58,6 +66,10 @@ const LogoutButton = styled.button`
 
 const Content = styled.div`
   ${styles.content}
+`;
+
+const Footer = styled.div`
+  ${styles.footer}
 `;
 
 class PrivateRoute extends React.Component {
@@ -136,6 +148,9 @@ class ScreensRoot extends React.Component {
             <Route path="/" component={HomeScreen} />
           </Switch>
         </Content>
+        <Footer>
+          Powered by <a href={config.app.website} target="_blank">{config.app.name}</a>
+        </Footer>
       </Container>
     );
   }

@@ -3,7 +3,7 @@ import uuidv4 from 'uuid/v4';
 import config from '../../common/config';
 import { getUrlQuery } from '../../common/utils';
 
-const redirectUrl = `https://${config.appId}.chromiumapp.org/`;
+const redirectUrl = `https://${config.app.id}.chromiumapp.org/`;
 
 const scope = 'gist';
 const getAuthUrl = state => 'https://github.com/login/oauth/authorize?' +

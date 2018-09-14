@@ -2,6 +2,7 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const config = require('./src/common/config');
 
@@ -22,6 +23,10 @@ module.exports = {
     'content/content_iframe': './src/content/content_iframe.js',
     'background/background': './src/background/background.js',
     'app/App': './src/app/App.js',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
   },
   module: {
     rules: [
@@ -58,8 +63,17 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
   ],
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
+  optimization: {
+    minimizer: [new UglifyJsPlugin({
+      uglifyOptions: {
+        minimize: true,
+        compress: {
+          evaluate: false,
+        },
+        output: {
+          ascii_only: true,
+        },
+      },
+    })],
   },
 };

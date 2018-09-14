@@ -108,10 +108,10 @@ class ScreensRoot extends React.Component {
 
   handleCommand = (command) => {
     if (command.name === 'create') {
-      this.props.history.push('/gist');
+      this.waitAuthFetchThenPush('/gist');
     } else if (command.name === 'edit') {
       const { gistId, gistName } = command.params;
-      this.props.history.push(`/gist/${gistId}/${gistName}`);
+      this.waitAuthFetchThenPush(`/gist/${gistId}/${gistName}`);
     }
   }
 
@@ -124,8 +124,15 @@ class ScreensRoot extends React.Component {
 
   fetchAuthIfNeeded() {
     if (!this.props.auth.fetched && !this.props.auth.fetching) {
-      this.props.authActions.fetch();
+      this.fetchAuthPromise = this.props.authActions.fetch();
+      return;
     }
+
+    this.fetchAuthPromise = Promise.resolve();
+  }
+
+  waitAuthFetchThenPush(path) {
+    this.fetchAuthPromise.then(() => this.props.history.push(path));
   }
 
   render() {

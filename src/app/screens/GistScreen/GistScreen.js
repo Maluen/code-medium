@@ -58,6 +58,14 @@ const styles = {
       top: 0;
       right: 0;
       bottom: 0;
+      border: 1px solid rgba(27,31,35,0.2);
+      border-top: none;
+      border-radius: 0.25em;
+
+      &:focus-within {
+        border-color: #2188ff;
+        box-shadow: inset 0 1px 2px rgba(27,31,35,0.075), 0 0 0 0.2em rgba(3,102,214,0.3);
+      }
     }
   `,
 
@@ -77,7 +85,6 @@ const styles = {
     white-space: nowrap;
     vertical-align: middle;
     user-select: none;
-    border: 1px solid rgba(27,31,35,0.2);
     border-radius: 0.25em;
 
     &:hover {
@@ -254,7 +261,11 @@ class GistScreen extends React.Component {
           });
         })
         .catch(errorType => {
-          this.props.history.push(`/error/${errorType}`);
+          if (typeof errorType === 'string') {
+            this.props.history.push(`/error/${errorType}`);
+            return;
+          }
+          throw errorType;
         });
     } else {
       // create

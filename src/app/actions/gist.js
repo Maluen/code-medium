@@ -2,7 +2,7 @@ import services from '../services';
 import { CONTEXT } from '../../common/services/RPCService';
 import { getErrorMessage } from '../../common/utils';
 
-const RETRY_DELAY = 3000;
+const RETRY_INITIAL_DELAY = 2000;
 const MAX_RETRIES = -1;
 const UNRETRYABLE_ERROR_TYPES = ['unauthorized', 'not found'];
 
@@ -27,16 +27,31 @@ export function fetch(gistId, gistName) {
 
           if (isRetryable && (MAX_RETRIES < 0 || retries < MAX_RETRIES)) {
             // retry
-            const retrySeconds = Math.round(RETRY_DELAY / 1000);
-            const timeWord = retrySeconds === 1 ? 'second' : 'seconds';
-            const noty = services.noty.showError(`Gist fetch failed. Retrying in ${retrySeconds} ${timeWord}: ${errorMessage}`);
+            const retryDelay = RETRY_INITIAL_DELAY + (retries * RETRY_INITIAL_DELAY);
+
+            const notyText = (timeLeft) => {
+              const timeLeftSeconds = Math.round(timeLeft / 1000);
+              const timeWord = timeLeftSeconds === 1 ? 'second' : 'seconds';
+              return `Gist fetch failed. Retrying in ${timeLeftSeconds} ${timeWord}: ${errorMessage}`;
+            };
+            const noty = services.noty.showError({
+              text: notyText(retryDelay),
+              timeout: false,
+            });
+
             return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                noty.close();
-                setTimeout(() => { // wait noty close animation
-                  tryOne(retries + 1).then(resolve, reject);
-                }, 500);
-              }, RETRY_DELAY);
+              let timeLeft = retryDelay;
+              const interval = setInterval(() => {
+                timeLeft -= 1000;
+                noty.setText(notyText(timeLeft));
+                if (timeLeft <= 0) {
+                  clearInterval(interval);
+                  noty.close();
+                  setTimeout(() => { // wait noty close animation
+                    tryOne(retries + 1).then(resolve, reject);
+                  }, 500);
+                }
+              }, 1000);
             });
           }
 

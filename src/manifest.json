@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "minimum_chrome_version": "34",
   "name": "Code Medium",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Extend the Medium interface to automatically add and edit GitHub gists, without having to leave the editor.",
   "icons": {
     "48": "assets/icon.png",

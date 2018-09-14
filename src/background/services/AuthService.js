@@ -64,6 +64,7 @@ class AuthService {
   start(services) {
     this.services = services;
     this.accessToken = null;
+    this.userId = null;
 
     this.services.rpc.registerHandlers({
       'auth.fetch': this.handleFetch,
@@ -74,15 +75,22 @@ class AuthService {
 
   handleFetch = async () => {
     const accessToken = await this.getAccessToken();
+    const userId = await this.getUserId();
     return {
       loggedIn: !!accessToken,
+      userId,
     };
   }
 
   handleLogIn = async () => {
     const { code, state } = await getAuthCode();
     const accessToken = await getAccessToken(code, state);
+    const { id: userId } = await this.services.api.get('/user', accessToken);
+
     await this.saveAccessToken(accessToken);
+    await this.saveUserId(userId);
+
+    return { userId };
   }
 
   handleLogout = async () => {
@@ -93,6 +101,7 @@ class AuthService {
 
     await revokeAccessToken(accessToken);
     await this.saveAccessToken(null);
+    await this.saveUserId(null);
   }
 
   async saveAccessToken(accessToken) {
@@ -106,6 +115,19 @@ class AuthService {
       this.accessToken = storedObj.accessToken;
     }
     return this.accessToken;
+  }
+
+  async saveUserId(userId) {
+    this.userId = userId;
+    await browser.storage.local.set({ userId });
+  }
+
+  async getUserId() {
+    if (typeof this.userId === 'undefined' || this.userId === null) {
+      const storedObj = await browser.storage.local.get({ userId: null });
+      this.userId = storedObj.userId;
+    }
+    return this.userId;
   }
 }
 

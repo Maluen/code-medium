@@ -17,22 +17,19 @@ export function gist(state = initialState, action) {
       return {
         ...state,
         fetching: true,
-        fetched: false,
-        gist: null,
       };
     case 'GIST_FETCH_SUCCESS':
       return {
         ...state,
         fetching: false,
+        errorMessage: '',
         fetched: true,
         gist: action.gist,
-        errorMessage: '',
       };
     case 'GIST_FETCH_FAILURE':
       return {
         ...state,
         fetching: false,
-        fetched: false,
         errorMessage: action.errorMessage,
       };
 
@@ -40,20 +37,19 @@ export function gist(state = initialState, action) {
       return {
         ...state,
         creating: true,
-        created: false,
       };
     case 'GIST_CREATE_SUCCESS':
       return {
         ...state,
         creating: false,
-        created: true,
         errorMessage: '',
+        created: true,
+        gist: action.gist,
       };
     case 'GIST_CREATE_FAILURE':
       return {
         ...state,
         creating: false,
-        created: false,
         errorMessage: action.errorMessage,
       };
 
@@ -61,20 +57,19 @@ export function gist(state = initialState, action) {
       return {
         ...state,
         editing: true,
-        edited: false,
       };
     case 'GIST_EDIT_SUCCESS':
       return {
         ...state,
         editing: false,
-        edited: true,
         errorMessage: '',
+        edited: true,
+        gist: action.gist,
       };
     case 'GIST_EDIT_FAILURE':
       return {
         ...state,
         editing: false,
-        edited: false,
         errorMessage: action.errorMessage,
       };
 
@@ -82,20 +77,18 @@ export function gist(state = initialState, action) {
       return {
         ...state,
         deleting: true,
-        deleted: false,
       };
     case 'GIST_DELETE_SUCCESS':
       return {
         ...state,
         deleting: false,
-        deleted: true,
         errorMessage: '',
+        deleted: true,
       };
     case 'GIST_DELETE_FAILURE':
       return {
         ...state,
         deleting: false,
-        deleted: false,
         errorMessage: action.errorMessage,
       };
     default:

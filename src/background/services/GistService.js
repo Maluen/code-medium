@@ -1,41 +1,3 @@
-import browser from 'webextension-polyfill';
-
-function api(path, method, accessToken, body) {
-  if (!path.startsWith('/')) {
-    path = '/' + path;
-  }
-  return fetch(`https://api.github.com${path}`, {
-    method,
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `token ${accessToken}`,
-    },
-    cache: 'no-cache',
-    body: body ? JSON.stringify(body) : undefined,
-  }).then(response => {
-    if (!response.ok) throw new Error(response.statusText);
-    if (response.status === 204) return;
-    return response.json();
-  });
-}
-
-function apiGet(path, accessToken) {
-  return api(path, 'GET', accessToken);
-}
-
-function apiPost(path, accessToken, body) {
-  return api(path, 'POST', accessToken, body);
-}
-
-function apiPatch(path, accessToken, body) {
-  return api(path, 'PATCH', accessToken, body);
-}
-
-function apiDelete(path, accessToken, body) {
-  return api(path, 'DELETE', accessToken, body);
-}
-
 class GistService {
   start(services) {
     this.services = services;
@@ -56,7 +18,7 @@ class GistService {
 
     console.log('FETCHING', gistId);
 
-    return apiGet(`/gists/${gistId}`, accessToken);
+    return this.services.api.get(`/gists/${gistId}`, accessToken);
   }
 
   handleCreate = async ({ name, description, code, isPublic }) => {
@@ -67,7 +29,7 @@ class GistService {
 
     console.log('CREATING', name, description, code);
 
-    return apiPost('/gists', accessToken, {
+    return this.services.api.post('/gists', accessToken, {
       description,
       public: isPublic,
       files: {
@@ -86,7 +48,7 @@ class GistService {
 
     console.log('EDITING', gistId, name, description, code);
 
-    return apiPatch(`/gists/${gistId}`, accessToken, {
+    return this.services.api.patch(`/gists/${gistId}`, accessToken, {
       description,
       files: {
         [gistName]: { // original name
@@ -105,7 +67,7 @@ class GistService {
 
     console.log('DELETING', gistId);
 
-    return apiDelete(`/gists/${gistId}`, accessToken);
+    return this.services.api.delete(`/gists/${gistId}`, accessToken);
   }
 }
 

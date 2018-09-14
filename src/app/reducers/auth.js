@@ -1,4 +1,5 @@
 const initialState = {
+  userId: null,
   fetching: false,
   fetched: false,
   loggingIn: false,
@@ -13,21 +14,20 @@ export function auth(state = initialState, action) {
       return {
         ...state,
         fetching: true,
-        fetched: false,
       };
     case 'AUTH_FETCH_SUCCESS':
       return {
         ...state,
         fetching: false,
+        errorMessage: '',
         fetched: true,
         loggedIn: action.loggedIn,
-        errorMessage: '',
+        userId: action.userId,
       };
     case 'AUTH_FETCH_FAILURE':
       return {
         ...state,
         fetching: false,
-        fetched: false,
         errorMessage: action.errorMessage,
       };
 
@@ -35,20 +35,19 @@ export function auth(state = initialState, action) {
       return {
         ...state,
         loggingIn: true,
-        loggedIn: false,
       };
     case 'AUTH_LOGIN_SUCCESS':
       return {
         ...state,
         loggingIn: false,
-        loggedIn: true,
         errorMessage: '',
+        loggedIn: true,
+        userId: action.userId,
       };
     case 'AUTH_LOGIN_FAILURE':
       return {
         ...state,
         loggingIn: false,
-        loggedIn: false,
         errorMessage: action.errorMessage,
       };
 
@@ -61,8 +60,9 @@ export function auth(state = initialState, action) {
       return {
         ...state,
         loggingOut: false,
-        loggedIn: false,
         errorMessage: '',
+        loggedIn: false,
+        userId: null,
       };
     case 'AUTH_LOGOUT_FAILURE':
       return {

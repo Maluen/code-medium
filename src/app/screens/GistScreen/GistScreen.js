@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import styled, { css } from 'styled-components';
 
 import * as gistActions from '../../actions/gist';
+import services from '../../services';
 import Loading from '../../components/Loading';
 import TextInput from './TextInput';
 import CodeEditor from './CodeEditor';
@@ -111,6 +112,7 @@ const styles = {
     }
 
     &:disabled {
+      cursor: auto;
       color: rgba(36,41,46,0.4);
       background-color: #eff3f6;
       background-image: none;
@@ -244,6 +246,7 @@ const SaveButton = styled.button`
 
 class GistScreen extends React.Component {
   static propTypes = {
+    userId: PropTypes.number,
     gist: PropTypes.object,
     fetching: PropTypes.bool.isRequired,
     creating: PropTypes.bool.isRequired,
@@ -254,10 +257,12 @@ class GistScreen extends React.Component {
   };
 
   static defaultProps = {
+    userId: null,
     gist: null,
   };
 
   state = {
+    noAccess: false,
     description: '',
     name: '',
     code: '',
@@ -270,10 +275,17 @@ class GistScreen extends React.Component {
       this.props.gistActions.fetch(gistId, gistName)
         .then(gist => {
           console.log('FETCHED GIST', gist, gistId, gistName);
+
+          const noAccess = this.props.userId !== gist.owner.id;
+          if (noAccess) {
+            services.noty.showWarning('This gist doesn\'t belong to you. Saving is disabled.');
+          }
+
           this.setState({
             description: gist.description || '',
             name: gistName,
             code: gist.files[gistName].content,
+            noAccess,
           });
         })
         .catch(errorType => {
@@ -289,6 +301,7 @@ class GistScreen extends React.Component {
         description: '',
         name: '',
         code: '',
+        noAccess: false,
       });
     }
   }
@@ -311,21 +324,27 @@ class GistScreen extends React.Component {
 
   handleCreatePublicClick = () => {
     this.props.gistActions.create({
-      ...this.state,
+      description: this.state.description,
+      name: this.state.name,
+      code: this.state.code,
       isPublic: true,
     });
   }
 
   handleCreateSecretClick = () => {
     this.props.gistActions.create({
-      ...this.state,
+      description: this.state.description,
+      name: this.state.name,
+      code: this.state.code,
       isPublic: false,
     });
   }
 
   handleEditClick = () => {
     this.props.gistActions.edit({
-      ...this.state,
+      description: this.state.description,
+      name: this.state.name,
+      code: this.state.code,
       gistName: this.props.match.params.gistName,
       gistId: this.props.match.params.gistId,
     });
@@ -339,7 +358,7 @@ class GistScreen extends React.Component {
   }
 
   render() {
-    const { description, name, code } = this.state;
+    const { description, name, code, noAccess } = this.state;
     const saveDisabled = !name.trim() ||
       !code.trim();
 
@@ -390,6 +409,7 @@ class GistScreen extends React.Component {
           {editing ?
             <DeleteButton
               onClick={this.handleDeleteClick}
+              disabled={noAccess}
             >
               Delete gist
             </DeleteButton>
@@ -398,7 +418,7 @@ class GistScreen extends React.Component {
           <SaveButtonsContainer>
             {!editing ?
               <CreateSecretButton
-                disabled={saveDisabled}
+                disabled={saveDisabled || noAccess}
                 onClick={this.handleCreateSecretClick}
               >
                 Create secret gist
@@ -406,7 +426,7 @@ class GistScreen extends React.Component {
               : ''}
 
             <SaveButton
-              disabled={saveDisabled}
+              disabled={saveDisabled || noAccess}
               onClick={editing ? this.handleEditClick : this.handleCreatePublicClick}
             >
               {editing ? 'Update gist' : 'Create public gist'}
@@ -418,7 +438,8 @@ class GistScreen extends React.Component {
   }
 }
 
-const stateToProps = ({ gist }) => ({
+const stateToProps = ({ auth, gist }) => ({
+  userId: auth.userId,
   gist: gist.gist,
   fetching: gist.fetching,
   creating: gist.creating,

@@ -8,10 +8,11 @@ export function fetch() {
 
     return services.rpc
       .sendRequest(CONTEXT.background, null, 'auth.fetch')
-      .then(({ loggedIn }) => {
+      .then(({ loggedIn, userId }) => {
         dispatch({
           type: 'AUTH_FETCH_SUCCESS',
           loggedIn,
+          userId,
         });
         return loggedIn;
       })
@@ -34,8 +35,8 @@ export function login() {
 
     return services.rpc
       .sendRequest(CONTEXT.background, null, 'auth.login')
-      .then(() => {
-        dispatch({ type: 'AUTH_LOGIN_SUCCESS' });
+      .then(({ userId }) => {
+        dispatch({ type: 'AUTH_LOGIN_SUCCESS', userId });
         //console.log('login success');
       })
       .catch((err) => {

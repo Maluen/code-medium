@@ -74,7 +74,7 @@ export function create(data) {
     return services.rpc
       .sendRequest(CONTEXT.background, null, 'gist.create', data)
       .then(gist => {
-        dispatch({ type: 'GIST_CREATE_SUCCESS' });
+        dispatch({ type: 'GIST_CREATE_SUCCESS', gist });
         services.rpc.sendRequest(CONTEXT.content, null, 'app.gistCreated', gist);
         return gist;
       })
@@ -97,7 +97,7 @@ export function edit(data) {
     return services.rpc
       .sendRequest(CONTEXT.background, null, 'gist.edit', data)
       .then((gist) => {
-        dispatch({ type: 'GIST_EDIT_SUCCESS' });
+        dispatch({ type: 'GIST_EDIT_SUCCESS', gist });
         services.rpc.sendRequest(CONTEXT.content, null, 'app.gistEdited', gist);
         return gist;
       })

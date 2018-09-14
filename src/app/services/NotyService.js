@@ -26,6 +26,17 @@ class NotyService {
       ...options,
     });
   }
+
+  showWarning(options) {
+    if (typeof options === 'string') {
+      options = { text: options };
+    }
+
+    return this.show({
+      type: 'warning',
+      ...options,
+    });
+  }
 }
 
 export default NotyService;

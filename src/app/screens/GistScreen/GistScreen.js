@@ -76,16 +76,19 @@ const styles = {
   `,
 
   button: css`
-    background-color: #eff3f6;ì
+    background-color: #eff3f6;
     border-color: rgba(27,31,35,0.2);
     padding: 6px 12px;
     font-size: 14px;
     font-weight: 600;
+    font-family: inherit;
     line-height: 20px;
     white-space: nowrap;
     vertical-align: middle;
     user-select: none;
     border-radius: 0.25em;
+    border-style: solid;
+    outline: none;
 
     &:hover {
       background-color: #e6ebf1;
@@ -99,6 +102,12 @@ const styles = {
       background-image: none;
       border-color: rgba(27,31,35,0.35);
       box-shadow: inset 0 0.15em 0.3em rgba(27,31,35,0.15);
+    }
+
+    &:focus {
+      &:not(:active) {
+        box-shadow: 0 0 0 0.2em rgba(3,102,214,0.3);
+      }
     }
 
     &:disabled {
@@ -131,6 +140,13 @@ const styles = {
       background-image: none;
       border-color: rgba(27,31,35,0.5);
       box-shadow: inset 0 0.15em 0.3em rgba(27,31,35,0.15);
+    }
+
+    &:focus {
+      &:not(:active) {
+        box-shadow: 0 0 0 0.2em rgba(203,36,49,0.4);
+        border: 1px solid rgba(27,31,35,0.2);
+      }
     }
 
     &:disabled {

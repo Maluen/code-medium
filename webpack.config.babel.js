@@ -16,7 +16,7 @@ const sassLoader = {
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: process.env.NODE_ENV === 'production' ? null : 'source-map',
+  devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
   entry: {
     'content/content': './src/content/content.js',
     'content/content_iframe': './src/content/content_iframe.js',

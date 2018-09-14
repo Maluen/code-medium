@@ -10,6 +10,13 @@ import Loading from '../../components/Loading';
 import TextInput from './TextInput';
 import CodeEditor from './CodeEditor';
 
+function getDetectedLanguage(gist, gistName) {
+  return gist &&
+    gist.files &&
+    gist.files[gistName] &&
+    gist.files[gistName].language;
+}
+
 const styles = {
   container: css`
     width: 100%;
@@ -359,17 +366,18 @@ class GistScreen extends React.Component {
 
   render() {
     const { description, name, code, noAccess } = this.state;
+    const { gistId, gistName } = this.props.match.params;
+
     const saveDisabled = !name.trim() ||
       !code.trim();
-
-    const editing = !!this.props.match.params.gistId;
+    const editing = !!gistId;
     const loading = this.props.fetching ||
       this.props.creating ||
       this.props.editing ||
       this.props.deleting;
 
     const detectedLanguage = editing
-      ? this.props.gist && this.props.gist.files[this.props.match.params.gistName].language
+      ? getDetectedLanguage(this.props.gist, gistName)
       : '';
 
     return (

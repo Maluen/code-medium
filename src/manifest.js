@@ -1,9 +1,9 @@
-module.exports = browser => ({
+module.exports = (browser, version) => ({
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhUUr0Z4y8DxD5WIezuYeGW3zDZkvGXST+uviv4jtXwkNVZI5XTUrs/pfYoYsOKdnrxkE47/mI+TiumUj7buB1pC+qeWYjVEshDD5Wum6J44RhXmAo7eb1e3u+IG0BmFvQOO+ENtRxIacZ/M8gexGRIlVWJKuRtcLREc7EkwxtWN58fPrWcYsuXfO3NDEkvrSz7hCCNgeVf/y0MKIz7ZRje8Afb1cRa2PtVAFJ2KUFikzghNFyAY8DVmXXZzrvUDbkeKxA/ja2+5TePhVhKBE+DpFGNUBhb1bEi+pl7ysssxFxjdwiW5/9q58JJeh1Mcu1lnoGIVQTspcd5fbioMNNQIDAQAB",
   "manifest_version": 2,
   "minimum_chrome_version": "34",
   "name": "Code Medium",
-  "version": "0.1.1",
+  version,
   "description": "Extends the Medium writer interface to quickly create and edit Github Gists, without having to leave the editor.",
   "icons": {
     "48": "assets/icon.png",

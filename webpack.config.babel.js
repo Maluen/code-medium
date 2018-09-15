@@ -8,6 +8,7 @@ const webpack = require('webpack');
 
 const config = require('./src/common/config');
 const manifest = require('./src/manifest');
+const packageJson = require('./package.json');
 
 const sassLoader = {
   loader: 'sass-loader',
@@ -58,7 +59,7 @@ const createConfig = (browser) => ({
     }),
     new CleanWebpackPlugin(['dist']),
     new WriteJsonPlugin({
-      object: manifest(browser),
+      object: manifest(browser, packageJson.version),
       filename: 'manifest.json',
       pretty: true,
     }),

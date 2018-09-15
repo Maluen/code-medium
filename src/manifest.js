@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = browser => ({
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhUUr0Z4y8DxD5WIezuYeGW3zDZkvGXST+uviv4jtXwkNVZI5XTUrs/pfYoYsOKdnrxkE47/mI+TiumUj7buB1pC+qeWYjVEshDD5Wum6J44RhXmAo7eb1e3u+IG0BmFvQOO+ENtRxIacZ/M8gexGRIlVWJKuRtcLREc7EkwxtWN58fPrWcYsuXfO3NDEkvrSz7hCCNgeVf/y0MKIz7ZRje8Afb1cRa2PtVAFJ2KUFikzghNFyAY8DVmXXZzrvUDbkeKxA/ja2+5TePhVhKBE+DpFGNUBhb1bEi+pl7ysssxFxjdwiW5/9q58JJeh1Mcu1lnoGIVQTspcd5fbioMNNQIDAQAB",
   "manifest_version": 2,
   "minimum_chrome_version": "34",
@@ -53,4 +53,4 @@ module.exports = {
     "https://github.com/*",
     "https://gist.github.com/*"
   ]
-};
+});

@@ -58,7 +58,7 @@ const createConfig = (browser) => ({
     }),
     new CleanWebpackPlugin(['dist']),
     new WriteJsonPlugin({
-      object: manifest,
+      object: manifest(browser),
       filename: 'manifest.json',
       pretty: true,
     }),

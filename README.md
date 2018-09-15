@@ -3,6 +3,10 @@ Code Medium
 
 Browser extension that simplifies writing code in Medium posts. Quickly create and edit Github Gists without leaving the editor.
 
+ <p align="center"> 
+    <img src="/screenshots/screencast.gif?raw=true" alt="Code Medium">
+ </p>
+
 Features
 --------
 * Adds a button in the text toolbar for creating a new Gist and adding it to the post.

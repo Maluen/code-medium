@@ -2,7 +2,7 @@ module.exports = {
   namespace: 'code-medium-extension',
 
   app: {
-    id: 'ngfmojcpjegijnhgmppclndgmhdoeemc', // TODO: update with permanent ID once deployed to the store
+    id: 'dganoageikmadjocbmklfgaejpkdigbe',
     name: 'Code Medium',
     website: 'https://github.com/Maluen/code-medium',
   },

@@ -12,6 +12,21 @@ Features
   To only remove the embed, just click on it and press the delete key as usual.
 * Syntax highlighting for the most popular programming languages thanks to [react-ace](https://github.com/securingsincity/react-ace)!
 
+Installing from store
+--------
+
+- Chrome: https://chrome.google.com/webstore/detail/code-medium/dganoageikmadjocbmklfgaejpkdigbe
+- Firefox: https://addons.mozilla.org/en-US/firefox/addon/code-medium/ 
+
+Building manually
+--------
+
+- Install dependencies with `yarn`
+- To build for development and watch for changes run `yarn start`
+- To build for production run `yarn run build`
+
+Files will be generated under `dist/chrome` and `dist/firefox`.
+
 Authorizing the application
 --------
 This extension uses the [GitHub Gist API](https://developer.github.com/v3/gists/) to create and edit gists,

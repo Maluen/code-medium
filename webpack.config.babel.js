@@ -3,8 +3,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const WriteJsonPlugin = require('write-json-webpack-plugin');
+const webpack = require('webpack');
 
 const config = require('./src/common/config');
+const manifest = require('./src/manifest');
 
 const sassLoader = {
   loader: 'sass-loader',
@@ -15,7 +18,7 @@ const sassLoader = {
   },
 };
 
-module.exports = {
+const createConfig = (browser) => ({
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
   entry: {
@@ -25,7 +28,7 @@ module.exports = {
     'app/App': './src/app/App.js',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist') + '/' + browser,
     filename: '[name].js',
   },
   module: {
@@ -50,10 +53,17 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.BROWSER': JSON.stringify(browser),
+    }),
     new CleanWebpackPlugin(['dist']),
+    new WriteJsonPlugin({
+      object: manifest,
+      filename: 'manifest.json',
+      pretty: true,
+    }),
     new CopyWebpackPlugin([
       { from: 'src/assets', to: 'assets' },
-      { from: 'src/manifest.json', to: '.' },
       { from: 'src/background/background.html', to: 'background' },
       { from: 'src/app/index.html', to: 'app' },
       { from: 'src/app/assets', to: 'app/assets' },
@@ -77,4 +87,6 @@ module.exports = {
       },
     })],
   },
-};
+});
+
+module.exports = ['chrome', 'firefox'].map(createConfig);

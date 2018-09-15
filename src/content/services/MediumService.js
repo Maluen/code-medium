@@ -111,7 +111,7 @@ class MediumService {
 
   updateGistIntoPost() {
     // reloading the iframe is enough
-    const fieldEl = document.querySelector('figure.is-selected.is-mediaFocused');
+    const fieldEl = document.querySelector('figure.is-selected');
     const iframe = fieldEl.querySelector('iframe');
     const src = iframe.src;
     iframe.addEventListener('load', function onload() {
@@ -122,7 +122,7 @@ class MediumService {
   }
 
   deleteGistIntoPost() {
-    const fieldEl = document.querySelector('figure.is-selected.is-mediaFocused');
+    const fieldEl = document.querySelector('figure.is-selected');
     simulateBackspaceKeydown(fieldEl);
   }
 }

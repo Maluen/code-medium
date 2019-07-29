@@ -33,12 +33,7 @@ module.exports = (browser, version) => ({
   "content_scripts": [
     {
       "matches": [
-        "https://medium.com/new-story",
-        "https://medium.com/new-story/**",
-        "https://medium.com/new-story?**",
-        "https://medium.com/**/edit",
-        "https://medium.com/**/edit/**",
-        "https://medium.com/**/edit?**"
+        "https://medium.com/**"
       ],
       "js": [
         "content/content.js"

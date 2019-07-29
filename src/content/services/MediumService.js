@@ -61,16 +61,23 @@ class MediumService {
   }
 
   async extendCommands() {
-    this.commandsEl = await waitForEl('.inlineTooltip-menu');
+    const check = () => {
+      const newCommandsEl = document.querySelector('.inlineTooltip-menu');
+      if (newCommandsEl && newCommandsEl !== this.commandsEl) {
+        this.commandsEl = newCommandsEl;
+        const buttonEl = this.commandsEl.querySelector('[aria-label="Add an embed"]').cloneNode(true);
+        const title = 'Add a GitHub Gist';
+        buttonEl.classList.add(namespace('button'));
+        buttonEl.setAttribute('title', title);
+        buttonEl.setAttribute('aria-label', title);
+        buttonEl.setAttribute('data-action', 'inline-menu-gist');
+        buttonEl.addEventListener('click', this.handleCreateGistClick);
+        this.commandsEl.appendChild(buttonEl);
+      }
+    };
 
-    const buttonEl = this.commandsEl.querySelector('[aria-label="Add an embed"]').cloneNode(true);
-    const title = 'Add a GitHub Gist';
-    buttonEl.classList.add(namespace('button'));
-    buttonEl.setAttribute('title', title);
-    buttonEl.setAttribute('aria-label', title);
-    buttonEl.setAttribute('data-action', 'inline-menu-gist');
-    buttonEl.addEventListener('click', this.handleCreateGistClick);
-    this.commandsEl.appendChild(buttonEl);
+    setInterval(check, 100);
+    check();
   }
 
   handleCreateGistClick = () => {

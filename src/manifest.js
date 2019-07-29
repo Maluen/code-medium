@@ -34,7 +34,11 @@ module.exports = (browser, version) => ({
     {
       "matches": [
         "https://medium.com/new-story",
-        "https://medium.com/**/edit"
+        "https://medium.com/new-story/**",
+        "https://medium.com/new-story?**",
+        "https://medium.com/**/edit",
+        "https://medium.com/**/edit/**",
+        "https://medium.com/**/edit?**"
       ],
       "js": [
         "content/content.js"

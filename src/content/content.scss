@@ -59,5 +59,9 @@ html.#{$namespace}-app-open {
     .postArticle-content .sectionLayout--insetColumn {
       margin: 0; // move the medium editor all the way to the left
     }
+
+    .highlightMenu {
+      display: none !important; // prevent bold/italic/etc tool from appearing when text is selected
+    }
   }
 }

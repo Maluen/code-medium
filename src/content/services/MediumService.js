@@ -84,6 +84,12 @@ class MediumService {
             e.stopImmediatePropagation();
           }
         }, true);
+        this.postArticleContent.addEventListener('paste', (e) => {
+          if (this.services.app.isOpen()) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
         this.handleAppOpenState();
       }
     };

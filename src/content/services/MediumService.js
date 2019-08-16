@@ -74,10 +74,31 @@ class MediumService {
         buttonEl.addEventListener('click', this.handleCreateGistClick);
         this.commandsEl.appendChild(buttonEl);
       }
+
+      const newPostArticleContent = document.querySelector('.postArticle-content');
+      if (newPostArticleContent && newPostArticleContent !== this.postArticleContent) {
+        this.postArticleContent = newPostArticleContent;
+        this.postArticleContent.addEventListener('mouseup', (e) => {
+          if (this.services.app.isOpen()) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
+        this.handleAppOpenState();
+      }
     };
 
     setInterval(check, 100);
     check();
+  }
+
+  handleAppOpenState = () => {
+    if (this.postArticleContent) {
+      this.postArticleContent.setAttribute(
+        'contenteditable',
+        this.services.app.isOpen() ? 'false' : 'true'
+      );
+    }
   }
 
   handleCreateGistClick = () => {

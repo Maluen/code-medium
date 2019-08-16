@@ -37,6 +37,7 @@ module.exports = {
     "react/button-has-type": 0,
     "object-curly-newline": 0,
     "no-confusing-arrow": 0,
-    "spaced-comment": 1
+    "spaced-comment": 1,
+    "comma-dangle": 1,
   }
 };

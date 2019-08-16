@@ -40,4 +40,24 @@ $buttonColor: rgb(0, 171, 108);
 
 html.#{$namespace}-app-open {
   overflow: hidden;
+
+  @media (min-width: 1150px) {
+    overflow-y: auto;
+
+    .#{$namespace}-app {
+      position: fixed;
+      right: 0;
+      left: auto;
+      width: calc(100% - 740px);
+
+      iframe {
+        height: 100%;
+        width: calc(100% - 1px);
+      }
+    }
+
+    .postArticle-content .sectionLayout--insetColumn {
+      margin: 0; // move the medium editor all the way to the left
+    }
+  }
 }

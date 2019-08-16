@@ -12,6 +12,7 @@ class AppService {
       'app.gistEdited': this.handleEditedGist,
       'app.gistDeleted': this.handleDeletedGist,
       'app.loggedOut': this.rejectAndClose,
+      'app.close': this.rejectAndClose,
     });
 
     this.injectApp();
@@ -45,12 +46,18 @@ class AppService {
   open() {
     this.el.classList.remove(namespace('hide'));
     document.documentElement.classList.add(namespace('app-open'));
+    this.services.medium.handleAppOpenState();
   }
 
   close() {
     this.el.classList.add(namespace('hide'));
     document.documentElement.classList.remove(namespace('app-open'));
+    this.services.medium.handleAppOpenState();
     this.reset();
+  }
+
+  isOpen = () => {
+    return document.documentElement.classList.contains(namespace('app-open'));
   }
 
   reset() {

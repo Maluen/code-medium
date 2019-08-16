@@ -9,6 +9,7 @@ import styled, { css } from 'styled-components';
 import services from '../services';
 import config from '../../common/config';
 import * as authActions from '../actions/auth';
+import * as rootActions from '../actions/root';
 import Loading from '../components/Loading';
 import HomeScreen from './HomeScreen';
 import AuthScreen from './AuthScreen';
@@ -31,11 +32,19 @@ const styles = {
   logoutButton: css`
     background: white;
     margin: 0;
-    padding: 10px 20px;
+    padding: 1px 20px;
+    border: 1px solid #e1e4e8;
+    border-top: none;
+    cursor: pointer;
+  `,
+
+  closeButton: css`
+    background: white;
+    margin: 0;
+    margin-left: 25px;
     border: 1px solid #e1e4e8;
     border-top: none;
     border-right: none;
-    float: right;
     cursor: pointer;
   `,
 
@@ -62,6 +71,10 @@ const Header = styled.div`
 
 const LogoutButton = styled.button`
   ${styles.logoutButton}
+`;
+
+const CloseButton = styled.button`
+  ${styles.closeButton}
 `;
 
 const Content = styled.div`
@@ -122,6 +135,10 @@ class ScreensRoot extends React.Component {
     }
   }
 
+  handleCloseClick = () => {
+    this.props.rootActions.close();
+  }
+
   fetchAuthIfNeeded() {
     if (!this.props.auth.fetched && !this.props.auth.fetching) {
       this.fetchAuthPromise = this.props.authActions.fetch();
@@ -145,6 +162,7 @@ class ScreensRoot extends React.Component {
         {loading ? <Loading /> : ''}
         <Header>
           {authed ? <LogoutButton onClick={this.handleLogoutClick}>Logout</LogoutButton> : ''}
+          <CloseButton onClick={this.handleCloseClick}>X</CloseButton>
         </Header>
         <Content>
           <Switch>
@@ -169,6 +187,7 @@ const stateToProps = ({ auth }) => ({
 
 const dispatchToProps = dispatch => ({
   authActions: bindActionCreators(authActions, dispatch),
+  rootActions: bindActionCreators(rootActions, dispatch),
 });
 
 // NOTE: keep withRouter as first one,

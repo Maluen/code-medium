@@ -1,4 +1,4 @@
-import { namespace } from '../common/utils';
+import { namespace, waitForEl } from '../common/utils';
 
 function start() {
   if (window.top === window) return; // iframe only
@@ -27,6 +27,23 @@ function start() {
         topic: 'response:iframe.info',
         data: { gistId, gistName },
       }, '*');
+    }
+  });
+
+  waitForEl('body').then(() => {
+    const isGistIframe = !!document.body.querySelector('script[src^="https://gist.github.com/"]');
+    if (isGistIframe) {
+      // wait full loading of gist
+      waitForEl('.gist-meta').then(() => {
+        const documentHeight = document.body.clientHeight;
+        console.log('IFRAME GIST, DOCUMENT HEIGHT', documentHeight);
+        window.top.postMessage({
+          from: namespace('app'),
+          to: namespace('app'),
+          topic: 'iframe:gist:documentHeight',
+          data: { documentHeight },
+        }, '*');
+      });
     }
   });
 }

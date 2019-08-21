@@ -46,6 +46,9 @@ class MediumService {
           this.handleEditGistClick(message.data.gistId, message.data.gistName);
         }
       }
+      if (message.topic === 'iframe:gist:documentHeight') {
+        this.handleGistDocumentHeight(event.source, message.data.documentHeight);
+      }
     });
 
     document.body.addEventListener('dblclick', (event) => {
@@ -158,6 +161,20 @@ class MediumService {
   deleteGistIntoPost() {
     const fieldEl = document.querySelector('figure.is-selected');
     simulateBackspaceKeydown(fieldEl);
+  }
+
+  handleGistDocumentHeight(iframeWindow, documentHeight) {
+    const iframes = Array.from(document.body.querySelectorAll('iframe'));
+    const iframe = iframes.find(anIframe => anIframe.contentWindow === iframeWindow);
+    if (iframe) {
+      const aspectRatioEl = iframe.closest('figure').querySelector('.aspectRatioPlaceholder-fill');
+
+      const iframeComputedStyle = window.getComputedStyle(iframe);
+      const iframeVerticalBorder = parseInt(iframeComputedStyle.borderTopWidth, 10) +
+        parseInt(iframeComputedStyle.borderBottomWidth, 10);
+
+      aspectRatioEl.style.paddingBottom = `${documentHeight + iframeVerticalBorder}px`;
+    }
   }
 }
 

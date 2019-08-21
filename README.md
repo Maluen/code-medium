@@ -9,14 +9,15 @@ Browser extension that simplifies writing code in Medium posts. Quickly create a
 
 Features
 --------
-* Adds a button in the text toolbar for creating a new Gist and adding it to the post.
-* Gists can be created as either public or secret (unlisted).
-* Double click on an existing Gist to edit or delete it.
-* Deleting a gist will remove both the embed from the post and the gist from your account.
-  To only remove the embed, just click on it and press the delete key as usual.
-* Syntax highlighting for the most popular programming languages thanks to [react-ace](https://github.com/securingsincity/react-ace)!
 
-* Fixes the height of the Gists in the editor, to display them without being cut and without the extra padding (https://github.com/Maluen/code-medium/issues/3).
+- Adds a button in the text toolbar for creating a new Gist and adding it to the post.
+- Gists can be created as either public or secret (unlisted).
+- Double click on an existing Gist to edit or delete it.
+- Deleting a gist will remove both the embed from the post and the gist from your account.
+  To only remove the embed, just click on it and press the delete key as usual.
+- Syntax highlighting for the most popular programming languages thanks to [react-ace](https://github.com/securingsincity/react-ace)!
+- Fixes the height of the Gists in the editor, to display them without being cut and without the extra padding (https://github.com/Maluen/code-medium/issues/3).
+
 
 Installing from store
 --------

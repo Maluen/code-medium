@@ -313,6 +313,25 @@ class GistScreen extends React.Component {
     }
   }
 
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleWindowKeydown, true);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleWindowKeydown, true);
+  }
+
+  handleWindowKeydown = (event) => {
+    // Ctrl + S: update gist
+    if (event.ctrlKey && event.code === 'KeyS') {
+      const editing = !!this.props.match.params.gistId;
+      if (editing && !this.isSaveDisabled()) {
+        event.preventDefault();
+        this.handleEditClick();
+      }
+    }
+  }
+
   handleDescriptionChange = (event) => {
     this.setState({ description: event.currentTarget.value });
   }
@@ -364,12 +383,18 @@ class GistScreen extends React.Component {
     }
   }
 
+  isSaveDisabled = () => {
+    const { name, code, noAccess } = this.state;
+
+    return !name.trim() ||
+      !code.trim() ||
+      noAccess;
+  }
+
   render() {
     const { description, name, code, noAccess } = this.state;
     const { gistId, gistName } = this.props.match.params;
 
-    const saveDisabled = !name.trim() ||
-      !code.trim();
     const editing = !!gistId;
     const loading = this.props.fetching ||
       this.props.creating ||
@@ -379,6 +404,8 @@ class GistScreen extends React.Component {
     const detectedLanguage = editing
       ? getDetectedLanguage(this.props.gist, gistName)
       : '';
+
+    const saveDisabled = this.isSaveDisabled();
 
     return (
       <Container>
@@ -426,7 +453,7 @@ class GistScreen extends React.Component {
           <SaveButtonsContainer>
             {!editing ?
               <CreateSecretButton
-                disabled={saveDisabled || noAccess}
+                disabled={saveDisabled}
                 onClick={this.handleCreateSecretClick}
               >
                 Create secret gist
@@ -434,7 +461,7 @@ class GistScreen extends React.Component {
               : ''}
 
             <SaveButton
-              disabled={saveDisabled || noAccess}
+              disabled={saveDisabled}
               onClick={editing ? this.handleEditClick : this.handleCreatePublicClick}
             >
               {editing ? 'Update gist' : 'Create public gist'}

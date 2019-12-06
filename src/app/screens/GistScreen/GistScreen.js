@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import styled, { css } from 'styled-components';
 
 import * as gistActions from '../../actions/gist';
+import * as optionsActions from '../../actions/options';
 import services from '../../services';
 import Loading from '../../components/Loading';
 import TextInput from './TextInput';
@@ -261,6 +262,7 @@ class GistScreen extends React.Component {
     deleting: PropTypes.bool.isRequired,
 
     gistActions: PropTypes.object.isRequired,
+    optionsActions: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -321,13 +323,29 @@ class GistScreen extends React.Component {
     window.removeEventListener('keydown', this.handleWindowKeydown, true);
   }
 
-  handleWindowKeydown = (event) => {
-    // Ctrl + S: update gist
-    if (event.ctrlKey && event.code === 'KeyS') {
+  isSaveDisabled = () => {
+    const { name, code, noAccess } = this.state;
+
+    return !name.trim() ||
+      !code.trim() ||
+      noAccess;
+  }
+
+  handleWindowKeydown = async (event) => {
+    // Ctrl + S: save gist
+    if (event.ctrlKey && event.code === 'KeyS' && !this.isSaveDisabled()) {
+      event.preventDefault();
+
       const editing = !!this.props.match.params.gistId;
-      if (editing && !this.isSaveDisabled()) {
-        event.preventDefault();
-        this.handleEditClick();
+      if (editing) {
+        this.edit();
+      } else {
+        const preferredCreateMethod = await this.props.optionsActions.get('preferredCreateMethod');
+        if (preferredCreateMethod === 'secret') {
+          this.createSecret();
+        } else {
+          this.createPublic();
+        }
       }
     }
   }
@@ -348,7 +366,12 @@ class GistScreen extends React.Component {
     window.open(this.props.gist.html_url, '_blank');
   }
 
-  handleCreatePublicClick = () => {
+  handleCreatePublicClick = async (event) => {
+    await this.props.optionsActions.set('preferredCreateMethod', 'public');
+    this.createPublic();
+  }
+
+  createPublic = () => {
     this.props.gistActions.create({
       description: this.state.description,
       name: this.state.name,
@@ -357,7 +380,12 @@ class GistScreen extends React.Component {
     });
   }
 
-  handleCreateSecretClick = () => {
+  handleCreateSecretClick = async (event) => {
+    await this.props.optionsActions.set('preferredCreateMethod', 'secret');
+    this.createSecret();
+  }
+
+  createSecret = () => {
     this.props.gistActions.create({
       description: this.state.description,
       name: this.state.name,
@@ -366,7 +394,11 @@ class GistScreen extends React.Component {
     });
   }
 
-  handleEditClick = () => {
+  handleEditClick = (event) => {
+    this.edit();
+  }
+
+  edit = () => {
     this.props.gistActions.edit({
       description: this.state.description,
       name: this.state.name,
@@ -381,14 +413,6 @@ class GistScreen extends React.Component {
     if (confirmed) {
       this.props.gistActions.deleteGist(this.props.match.params.gistId);
     }
-  }
-
-  isSaveDisabled = () => {
-    const { name, code, noAccess } = this.state;
-
-    return !name.trim() ||
-      !code.trim() ||
-      noAccess;
   }
 
   render() {
@@ -484,6 +508,7 @@ const stateToProps = ({ auth, gist }) => ({
 
 const dispatchToProps = dispatch => ({
   gistActions: bindActionCreators(gistActions, dispatch),
+  optionsActions: bindActionCreators(optionsActions, dispatch),
 });
 
 export default connect(stateToProps, dispatchToProps)(GistScreen);

@@ -3,18 +3,24 @@ import uuidv4 from 'uuid/v4';
 import config from '../../common/config';
 import { getUrlQuery } from '../../common/utils';
 
-const redirectUrl = `https://${config.app.id}.chromiumapp.org/`;
+const authConfig = config.auths[process.env.BROWSER];
+const { clientId, clientSecret } = authConfig;
+
+const redirectUrl = (process.env.BROWSER === 'firefox')
+  ? browser.identity.getRedirectURL()
+  : `https://${config.app.ids.chrome}.chromiumapp.org/`;
+console.log('OAUTH REDIRECT URL', redirectUrl);
 
 const scope = 'gist';
 const getAuthUrl = state => 'https://github.com/login/oauth/authorize?' +
-  `client_id=${encodeURIComponent(config.auth.clientId)}&` +
+  `client_id=${encodeURIComponent(clientId)}&` +
   `scope=${encodeURIComponent(scope)}&` +
   `state=${encodeURIComponent(state)}&` +
   `redirect_uri=${redirectUrl}`;
 
 const getAccessTokenUrl = (code, state) => 'https://github.com/login/oauth/access_token?' +
-  `client_id=${encodeURIComponent(config.auth.clientId)}&` +
-  `client_secret=${encodeURIComponent(config.auth.clientSecret)}&` +
+  `client_id=${encodeURIComponent(clientId)}&` +
+  `client_secret=${encodeURIComponent(clientSecret)}&` +
   `code=${encodeURIComponent(code)}&` +
   `state=${encodeURIComponent(state)}&` +
   `redirect_uri=${redirectUrl}`;
@@ -45,10 +51,10 @@ function getAccessToken(code, state) {
 }
 
 function revokeAccessToken(accessToken) {
-  return fetch(`https://api.github.com/applications/${config.auth.clientId}/tokens/${accessToken}`, {
+  return fetch(`https://api.github.com/applications/${clientId}/tokens/${accessToken}`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Basic ${btoa(config.auth.clientId + ':' + config.auth.clientSecret)}`,
+      Authorization: `Basic ${btoa(clientId + ':' + clientSecret)}`,
     },
   }).then(response => {
     // 404 here just means that the user is already logged out

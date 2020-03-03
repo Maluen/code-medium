@@ -8,13 +8,13 @@ module.exports = {
   },
   "globals": {
   },
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": path.join(__dirname, 'webpack.config.babel.js')
-      },
-    }
-  },
+  // "settings": {
+  //   "import/resolver": {
+  //     "webpack": {
+  //       "config": path.join(__dirname, 'webpack.config.babel.js')
+  //     },
+  //   }
+  // },
   "rules": {
     "react/jsx-filename-extension": 0,
     "react/no-multi-comp": 0,

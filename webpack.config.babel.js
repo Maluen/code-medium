@@ -1,5 +1,5 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -13,7 +13,7 @@ const packageJson = require('./package.json');
 const sassLoader = {
   loader: 'sass-loader',
   options: {
-    data: `
+    prependData: `
       $namespace: ${config.namespace};
     `,
   },
@@ -57,7 +57,15 @@ const createConfig = (browser) => ({
     new webpack.DefinePlugin({
       'process.env.BROWSER': JSON.stringify(browser),
     }),
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin({
+      cleanStaleWebpackAssets: false, // prevent cleaning of copied files (https://github.com/webpack-contrib/copy-webpack-plugin/issues/385#issuecomment-508914721)
+      cleanOnceBeforeBuildPatterns: [
+        path.resolve(__dirname, 'dist') + '/' + browser,
+
+        // exclude
+        `!.gitkeep`,
+      ]
+    }),
     new WriteJsonPlugin({
       object: manifest(browser, packageJson.version),
       filename: 'manifest.json',

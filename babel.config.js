@@ -5,7 +5,11 @@ module.exports = {
         chrome: "60",
         firefox: "55",
       },
-      useBuiltIns: "usage"
+      useBuiltIns: "usage",
+      corejs: {
+        version: 3,
+        proposals: true
+      }
     }],
     "@babel/preset-react"
   ],

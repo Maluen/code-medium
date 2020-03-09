@@ -3,7 +3,7 @@
 Prerequisites:
 
 - Install node v12.4.0 or higher
-- Install yarn v1.17.3 or higher
+- Install yarn v1.21.1 or higher
 
 Then, move to the source code root and execute the following commands:
 

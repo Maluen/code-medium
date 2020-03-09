@@ -51,11 +51,15 @@ function getAccessToken(code, state) {
 }
 
 function revokeAccessToken(accessToken) {
-  return fetch(`https://api.github.com/applications/${clientId}/tokens/${accessToken}`, {
+  return fetch(`https://api.github.com/applications/${clientId}/token`, {
     method: 'DELETE',
     headers: {
+      'Content-Type': 'application/json; charset=utf-8',
       Authorization: `Basic ${btoa(clientId + ':' + clientSecret)}`,
     },
+    body: JSON.stringify({
+      access_token: accessToken,
+    }),
   }).then(response => {
     // 404 here just means that the user is already logged out
     // e.g. they disconnected the application directly in github

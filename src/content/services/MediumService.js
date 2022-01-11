@@ -42,7 +42,7 @@ class MediumService {
       if (message.topic === 'response:iframe.info') {
         if (message.data.gistId) {
           console.log('received from frame: gist id ' + message.data.gistId +
-              ', gist name' + message.data.gistName);
+              ', gist name ' + message.data.gistName);
           this.handleEditGistClick(message.data.gistId, message.data.gistName);
         }
       }

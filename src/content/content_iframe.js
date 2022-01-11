@@ -18,7 +18,7 @@ function start() {
       const anchor = [...gistMetaEl.querySelectorAll('a[href^="https://gist.github.com/"]')]
         .find(a => a.href.indexOf('#file-') !== -1);
       const gistId = anchor.href.match(/\/([a-zA-Z0-9]+)#file-/)[1];
-      const gistName = anchor.innerText;
+      const gistName = anchor.innerText.trim();
       console.log('IFRAME: gist id ' + gistId + ', gist name: ' + gistName);
 
       window.top.postMessage({

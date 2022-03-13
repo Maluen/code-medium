@@ -31,7 +31,15 @@ $buttonColor: rgb(0, 171, 108);
 
 .#{$namespace}-button {
   transform: scale(1) rotate(90deg) !important;
-  
+
+  border-color: $buttonColor !important;
+  path {
+    fill: $buttonColor !important;
+  }
+}
+
+.#{$namespace}-substack-button {
+  color: $buttonColor !important;
   border-color: $buttonColor !important;
   path {
     fill: $buttonColor !important;

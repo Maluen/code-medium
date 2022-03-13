@@ -36,7 +36,8 @@ module.exports = (browser, version) => ({
   "content_scripts": [
     {
       "matches": [
-        "https://medium.com/**"
+        "https://medium.com/**",
+        "https://*.substack.com/**"
       ],
       "js": [
         "content/content.js"

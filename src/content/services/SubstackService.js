@@ -36,30 +36,18 @@ class MediumService {
   }
 
   bindEvents() {
-    window.addEventListener('message', event => {
-      const message = event.data;
-      if (typeof message !== 'object' || message === null) return;
-      if (message.from !== namespace('app') || message.to !== namespace('app')) return;
-      if (message.topic === 'response:iframe.info') {
-        if (message.data.gistId) {
-          console.log('received from frame: gist id ' + message.data.gistId +
-              ', gist name ' + message.data.gistName);
-          this.handleEditGistClick(message.data.gistId, message.data.gistName);
-        }
-      }
-      if (message.topic === 'iframe:gist:documentHeight') {
-        this.handleGistDocumentHeight(event.source, message.data.documentHeight);
-      }
-    });
-
     document.body.addEventListener('dblclick', (event) => {
-      if (event.target.classList.contains('iframeContainer')) {
-        const iframe = event.target.querySelector('iframe');
-        iframe.contentWindow.postMessage({
-          from: namespace('app'),
-          to: namespace('app'),
-          topic: 'request:iframe.info',
-        }, '*');
+      const gistEl = event.target.closest('.github-gist');
+      if (gistEl) {
+        const gistMetaEl = gistEl.querySelector('.gist-meta');
+        if (gistMetaEl) {
+          const anchor = [...gistMetaEl.querySelectorAll('a[href^="https://gist.github.com/"]')]
+            .find(a => a.href.indexOf('#file-') !== -1);
+          const gistId = anchor.href.match(/\/([a-zA-Z0-9]+)#file-/)[1];
+          const gistName = anchor.innerText.trim();
+          console.log('gist id ' + gistId + ', gist name: ' + gistName);
+          this.handleEditGistClick(gistId, gistName);
+        }
       }
     });
   }
@@ -164,22 +152,8 @@ class MediumService {
   }
 
   deleteGistIntoPost() {
-    const fieldEl = document.querySelector('figure.is-selected');
-    simulateBackspaceKeydown(fieldEl);
-  }
-
-  handleGistDocumentHeight(iframeWindow, documentHeight) {
-    const iframes = Array.from(document.body.querySelectorAll('iframe'));
-    const iframe = iframes.find(anIframe => anIframe.contentWindow === iframeWindow);
-    if (iframe) {
-      const aspectRatioEl = iframe.closest('figure').querySelector('.aspectRatioPlaceholder-fill');
-
-      const iframeComputedStyle = window.getComputedStyle(iframe);
-      const iframeVerticalBorder = parseInt(iframeComputedStyle.borderTopWidth, 10) +
-        parseInt(iframeComputedStyle.borderBottomWidth, 10);
-
-      aspectRatioEl.style.paddingBottom = `${documentHeight + iframeVerticalBorder}px`;
-    }
+    const gistEl = document.querySelector('.github-gist.ProseMirror-selectednode');
+    simulateBackspaceKeydown(gistEl);
   }
 }
 

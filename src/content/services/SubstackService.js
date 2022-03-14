@@ -77,7 +77,7 @@ class MediumService {
         buttonEl.classList.add(namespace('substack-button'));
         buttonEl.setAttribute('aria-label', title);
         buttonEl.setAttribute('data-action', 'inline-menu-gist');
-        buttonEl.addEventListener('click', this.handleCreateGistClick);
+        buttonEl.addEventListener('mousedown', this.handleCreateGistClick);
         this.commandsEl.appendChild(buttonEl);
       }
 
@@ -114,8 +114,6 @@ class MediumService {
   }
 
   handleCreateGistClick = () => {
-    this.commandsEl.querySelector('[aria-label="Add an embed"]').click();
-
     this.services.app.createGist()
       .then(gist => {
         //alert('CREATED: ' + gist.html_url);
@@ -143,10 +141,14 @@ class MediumService {
   }
 
   insertGistIntoPost(gist) {
-    const fieldEl = document.querySelector('p[data-default-value].is-selected');
-    fieldEl.innerText = gist.html_url;
-    moveCursorToEndOfElement(fieldEl);
-    setTimeout(() => simulateEnterKeydown(fieldEl), 0);
+    const clipboardData = new window.DataTransfer();
+    clipboardData.setData('text/plain', gist.html_url);
+    document.querySelector('[data-testid="editor"]').dispatchEvent(new window.ClipboardEvent('paste', {
+      bubbles: true,
+      cancelable: false,
+      defaultPrevented: false,
+      clipboardData,
+    }));
   }
 
   updateGistIntoPost() {

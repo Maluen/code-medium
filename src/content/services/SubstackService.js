@@ -130,7 +130,8 @@ class MediumService {
 
   insertGistIntoPost(gist) {
     const clipboardData = new window.DataTransfer();
-    clipboardData.setData('text/plain', gist.html_url);
+    const gistUrl = `https://gist.github.com/${gist.owner.login}/${gist.id}`;
+    clipboardData.setData('text/plain', gistUrl);
     document.querySelector('[data-testid="editor"]').dispatchEvent(new window.ClipboardEvent('paste', {
       bubbles: true,
       cancelable: false,

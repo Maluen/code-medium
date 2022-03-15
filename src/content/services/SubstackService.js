@@ -114,7 +114,7 @@ class MediumService {
     this.services.app.editGist(gistId, gistName)
       .then(gist => {
         //alert('EDITED: ' + gist.html_url);
-        this.updateGistIntoPost();
+        this.updateGistIntoPost(gist);
       })
       .catch(err => this.handleAppError(err));
   }
@@ -140,16 +140,9 @@ class MediumService {
     }));
   }
 
-  updateGistIntoPost() {
-    // reloading the iframe is enough
-    const fieldEl = document.querySelector('figure.is-selected');
-    const iframe = fieldEl.querySelector('iframe');
-    const src = iframe.src;
-    iframe.addEventListener('load', function onload() {
-      iframe.removeEventListener('load', onload);
-      iframe.src = src;
-    });
-    iframe.src = '';
+  updateGistIntoPost(gist) {
+    this.deleteGistIntoPost();
+    this.insertGistIntoPost(gist);
   }
 
   deleteGistIntoPost() {

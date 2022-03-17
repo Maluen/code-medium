@@ -26,7 +26,7 @@ function simulateBackspaceKeydown(el) {
   return simulateKeydown(el, 8);
 }
 
-class MediumService {
+class SubstackService {
   start(services) {
     console.log("substack hey!");
     this.services = services;
@@ -151,4 +151,4 @@ class MediumService {
   }
 }
 
-export default MediumService;
+export default SubstackService;

@@ -1,0 +1,67 @@
+$buttonColor: rgb(0, 171, 108);
+
+.inlineTooltip {
+  &.is-scaled {
+    width: auto !important; // make room for the extra button
+  }
+}
+
+.#{$namespace}-app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  iframe {
+    width: 80%;
+    height: 80%;
+    max-width: 900px;
+  }
+
+  &.#{$namespace}-hide {
+    display: none;
+  }
+}
+
+.#{$namespace}-button {
+  transform: scale(1) rotate(90deg) !important;
+  
+  border-color: $buttonColor !important;
+  path {
+    fill: $buttonColor !important;
+  }
+}
+
+html.#{$namespace}-app-open {
+  overflow: hidden;
+
+  @media (min-width: 1150px) {
+    overflow-y: auto;
+
+    .#{$namespace}-app {
+      position: fixed;
+      right: 0;
+      left: auto;
+      width: calc(100% - 740px);
+
+      iframe {
+        height: 100%;
+        width: calc(100% - 1px);
+      }
+    }
+
+    .postArticle-content .sectionLayout--insetColumn {
+      margin: 0; // move the medium editor all the way to the left
+    }
+
+    .highlightMenu {
+      display: none !important; // prevent bold/italic/etc tool from appearing when text is selected
+    }
+  }
+}

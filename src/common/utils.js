@@ -91,3 +91,25 @@ export function getErrorMessage(err) {
 
   return String(err);
 }
+
+export function makeStartable(fn) {
+  let startedPromiseDefer;
+  const startedPromise = new Promise((resolve, reject) => {
+    startedPromiseDefer = { resolve, reject };
+  });
+
+  let initPromise;
+  return {
+    init: () => {
+      initPromise = Promise.resolve(
+        fn({
+          startedPromise,
+        })
+      );
+    },
+    start: () => {
+      startedPromiseDefer.resolve();
+      return initPromise;
+    },
+  };
+}

@@ -30,6 +30,10 @@ class MediumService {
   start(services) {
     this.services = services;
 
+    this.services.rpc.registerHandlers({
+      'medium.createGist': this.handleCreateGist,
+    });
+
     this.bindEvents();
     this.extendCommands();
   }
@@ -107,6 +111,13 @@ class MediumService {
         'contenteditable',
         this.services.app.isOpen() ? 'false' : 'true'
       );
+    }
+  }
+
+  handleCreateGist = () => {
+    const buttonEl = this.commandsEl && this.commandsEl.querySelector('[data-action="inline-menu-gist"]');
+    if (buttonEl && !this.services.app.isOpen()) {
+      buttonEl.click();
     }
   }
 

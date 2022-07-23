@@ -72,7 +72,9 @@ module.exports = (browser, version) => ({
   "web_accessible_resources": ["app/*.*"],
   "commands": {
     'medium-create-gist': {
-      "suggested_key": 'Ctrl+Shift+0',
+      "suggested_key": {
+        "default": "Ctrl+Shift+0",
+      },
       "description": 'Create a Gist in the Medium Editor',
     },
   },

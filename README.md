@@ -17,7 +17,7 @@ Features
   To only remove the embed, just click on it and press the delete key as usual.
 - Syntax highlighting for the most popular programming languages thanks to [react-ace](https://github.com/securingsincity/react-ace)!
 - Fixes the height of the Gists in the editor, to display them without being cut and without the extra padding (https://github.com/Maluen/code-medium/issues/3).
-
+- Shortcuts: press "ALT + SHIFT + 0" while in a new paragraph to quickly open the Gist popup. The key combination can be changed in the browser settings.
 
 Installing from store
 --------

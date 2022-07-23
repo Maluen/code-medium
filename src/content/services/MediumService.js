@@ -115,6 +115,10 @@ class MediumService {
   }
 
   handleCreateGist = () => {
+    const inlineMenuEl = document.querySelector('[data-action="inline-menu"]');
+    if (!(inlineMenuEl && inlineMenuEl.parentElement.classList.contains('is-active'))) {
+      return;
+    }
     const buttonEl = this.commandsEl && this.commandsEl.querySelector('[data-action="inline-menu-gist"]');
     if (buttonEl && !this.services.app.isOpen()) {
       buttonEl.click();

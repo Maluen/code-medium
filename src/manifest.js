@@ -61,7 +61,7 @@ module.exports = (browser, version) => ({
   "commands": {
     'medium-create-gist': {
       "suggested_key": {
-        "default": "Ctrl+Shift+0",
+        "default": "Alt+Shift+0",
       },
       "description": 'Create a Gist in the Medium Editor',
     },

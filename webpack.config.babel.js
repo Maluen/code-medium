@@ -23,8 +23,9 @@ const createConfig = (browser) => ({
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
   entry: {
-    'content/content': './src/content/content.js',
-    'content/content_iframe': './src/content/content_iframe.js',
+    'content/content_medium': './src/content/content_medium.js',
+    'content/content_medium_iframe': './src/content/content_medium_iframe.js',
+    'content/content_substack': './src/content/content_substack.js',
     'background/background': './src/background/background.js',
     'app/App': './src/app/App.js',
   },

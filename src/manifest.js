@@ -36,13 +36,13 @@ module.exports = (browser, version) => ({
   "content_scripts": [
     {
       "matches": [
-        "https://medium.com/**"
+        "https://medium.com/**",
       ],
       "js": [
-        "content/content.js"
+        "content/content_medium.js"
       ],
       "css": [
-        "content/content.css"
+        "content/content_medium.css"
       ],
       "run_at": "document_idle"
     },
@@ -51,11 +51,23 @@ module.exports = (browser, version) => ({
         "https://medium.com/media/*"
       ],
       "js": [
-        "content/content_iframe.js"
+        "content/content_medium_iframe.js"
       ],
       "all_frames": true,
       "run_at": "document_idle"
-    }
+    },
+    {
+      "matches": [
+        "https://*.substack.com/**"
+      ],
+      "js": [
+        "content/content_substack.js"
+      ],
+      "css": [
+        "content/content_substack.css"
+      ],
+      "run_at": "document_idle"
+    },
   ],
   "web_accessible_resources": ["app/*.*"],
   "commands": {

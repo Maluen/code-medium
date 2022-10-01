@@ -1,35 +1,5 @@
 import config from './config';
 
-const identity = x => x;
-
-function generalTemplate(calculateValue = identity, transformResult = identity) {
-  return (strings, ...keys) => {
-    const result = strings[0] + keys.reduce((currentResult, key, i) => {
-      const value = calculateValue(key);
-      return currentResult + value + (strings[i + 1] || '');
-    }, '');
-    return transformResult(result);
-  };
-}
-
-const encoderEl = document.createElement('div');
-function encodeHTML(html) {
-  encoderEl.innerText = html;
-  return encoderEl.innerHTML;
-}
-
-const parserEl = document.createElement('div');
-export const parseHTML = generalTemplate(encodeHTML, elementOuterHTML => {
-  parserEl.innerHTML = elementOuterHTML;
-  return parserEl.firstElementChild;
-});
-
-export function injectCSS(css) {
-  const style = document.createElement('style');
-  style.innerHTML = css;
-  document.head.appendChild(style);
-}
-
 export function waitForEl(selector) {
   return new Promise((resolve) => {
     let checkInterval;
@@ -55,6 +25,11 @@ export function namespace(...args) {
 export function createServices(array) {
   const services = {};
 
+  let readyPromiseDefer;
+  const readyPromise = new Promise((resolve, reject) => {
+    readyPromiseDefer = { resolve, reject };
+  });
+
   array.forEach(info => {
     const [serviceName, ServiceClass] = info;
     services[serviceName] = new ServiceClass();
@@ -64,8 +39,9 @@ export function createServices(array) {
     for (let i = 0; i < array.length; i++) {
       const info = array[i];
       const [serviceName] = info;
-      await services[serviceName].start(services);
+      await services[serviceName].start(services, { readyPromise });
     }
+    readyPromiseDefer.resolve();
   };
 
   return { services, start };

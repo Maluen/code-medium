@@ -42,7 +42,10 @@ class RPCService {
     this.requestHandlers = {}; // <topic, function>
   }
 
-  start() {
+  start(services, { readyPromise }) {
+    this.services = services;
+    this.readyPromise = readyPromise;
+
     this.listenForMessages();
   }
 

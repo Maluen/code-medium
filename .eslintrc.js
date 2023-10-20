@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "extends": "airbnb",
   "env": {
     "browser": true

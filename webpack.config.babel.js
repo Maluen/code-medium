@@ -13,7 +13,7 @@ const packageJson = require('./package.json');
 const sassLoader = {
   loader: 'sass-loader',
   options: {
-    prependData: `
+    additionalData: `
       $namespace: ${config.namespace};
     `,
   },
@@ -31,7 +31,6 @@ const createConfig = (browser) => ({
   },
   output: {
     path: path.resolve(__dirname, 'dist') + '/' + browser,
-    filename: '[name].js',
   },
   module: {
     rules: [
@@ -72,12 +71,14 @@ const createConfig = (browser) => ({
       filename: 'manifest.json',
       pretty: true,
     }),
-    new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' },
-      { from: 'src/background/background.html', to: 'background' },
-      { from: 'src/app/index.html', to: 'app' },
-      { from: 'src/app/assets', to: 'app/assets' },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/assets', to: 'assets' },
+        { from: 'src/background/background.html', to: 'background' },
+        { from: 'src/app/index.html', to: 'app' },
+        { from: 'src/app/assets', to: 'app/assets' },
+      ],
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',
@@ -86,7 +87,7 @@ const createConfig = (browser) => ({
   optimization: {
     minimizer: [new TerserPlugin({
       terserOptions: {
-        minimize: true,
+        //minimize: true,
         compress: {
           evaluate: false,
           inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842

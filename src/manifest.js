@@ -24,7 +24,7 @@ module.exports = (browser, version) => {
     } : undefined,
     "name": "Code Medium",
     version,
-    "description": "Extends the Medium writer interface to quickly create and edit Github Gists, without having to leave the editor.",
+    "description": "Extends the Medium and Substack writer interfaces to quickly create and edit Github Gists, without having to leave the editor.",
     "icons": {
       "48": "assets/icon.png",
       "128": "assets/icon.png"

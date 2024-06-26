@@ -1,7 +1,7 @@
 Code Medium
 =================
 
-Browser extension that simplifies writing code in Medium posts. Quickly create and edit Github Gists without leaving the editor.
+Browser extension that simplifies writing code in Medium and Substack posts. Quickly create and edit Github Gists without leaving the editor.
 
  <p align="center"> 
     <img src="/screenshots/screencast.gif?raw=true" alt="Code Medium">
@@ -18,6 +18,9 @@ Features
 - Syntax highlighting for the most popular programming languages thanks to [react-ace](https://github.com/securingsincity/react-ace)!
 - Fixes the height of the Gists in the editor, to display them without being cut and without the extra padding (https://github.com/Maluen/code-medium/issues/3).
 - Shortcuts: press "ALT + SHIFT + 0" while in a new paragraph to quickly open the Gist popup. The key combination can be changed in the browser settings.
+
+Substack specific:
+- Fix gist embedding by preventing the fake "hidden unicode warning" messages. See https://github.com/Maluen/code-medium/issues/11#issuecomment-2192327945
 
 Installing from store
 --------

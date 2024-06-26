@@ -1,0 +1,83 @@
+$buttonColor: rgb(0, 171, 108);
+
+.#{$namespace}-app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  iframe {
+    width: 80%;
+    height: 80%;
+    max-width: 900px;
+  }
+
+  &.#{$namespace}-hide {
+    display: none;
+  }
+}
+
+.#{$namespace}-button {
+  transform: scale(1) rotate(90deg) !important;
+
+  border-color: $buttonColor !important;
+  path {
+    fill: $buttonColor !important;
+  }
+}
+
+.#{$namespace}-substack-button {
+  color: $buttonColor !important;
+  border-color: $buttonColor !important;
+  path {
+    fill: $buttonColor !important;
+  }
+}
+
+html.#{$namespace}-app-open {
+  overflow: hidden;
+
+  #entry {
+    pointer-events: none !important; // prevent interaction with the editor
+    * {
+      pointer-events: none !important;
+    }
+    .editor-scroll {
+      pointer-events: auto !important; // but still allow scrolling
+    }
+  }
+
+  @media (min-width: 1150px) {
+    overflow-y: auto;
+    $editorWidth: 740px;
+
+    .#{$namespace}-app {
+      position: fixed;
+      right: 0;
+      left: auto;
+      width: calc(100% - #{$editorWidth});
+
+      iframe {
+        height: 100%;
+        width: calc(100% - 1px);
+      }
+    }
+
+    #entry {
+      // move the medium editor all the way to the left
+      width: $editorWidth;
+      padding: 0 25px;
+      box-sizing: border-box;
+    }
+
+    .highlightMenu {
+      display: none !important; // prevent bold/italic/etc tool from appearing when text is selected
+    }
+  }
+}

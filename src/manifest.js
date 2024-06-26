@@ -6,6 +6,7 @@ module.exports = (browser, version) => {
   const HOST_PERMISSIONS = [
     "https://github.com/*",
     "https://gist.github.com/*",
+    "https://*.substack.com/**", // for InjectService
   ];
   return {
     "key": CHROME
@@ -52,10 +53,10 @@ module.exports = (browser, version) => {
           "https://medium.com/**"
         ],
         "js": [
-          "content/content.js"
+          "content/content_medium.js"
         ],
         "css": [
-          "content/content.css"
+          "content/content_medium.css"
         ],
         "run_at": "document_idle"
       },
@@ -64,17 +65,32 @@ module.exports = (browser, version) => {
           "https://medium.com/media/*"
         ],
         "js": [
-          "content/content_iframe.js"
+          "content/content_medium_iframe.js"
         ],
         "all_frames": true,
         "run_at": "document_idle"
-      }
+      },
+      {
+        "matches": [
+          "https://*.substack.com/**"
+        ],
+        "js": [
+          "content/content_substack.js"
+        ],
+        "css": [
+          "content/content_substack.css"
+        ],
+        "run_at": "document_idle"
+      },
     ],
     "web_accessible_resources": [
       ...(MANIFESTV3 ? [
         {
           "resources": ["app/*.*"],
-          "matches": ["https://medium.com/*"],
+          "matches": [
+            "https://medium.com/*",
+            "https://*.substack.com/*"
+          ],
         }
       ] : [
         "app/*.*"
@@ -92,6 +108,7 @@ module.exports = (browser, version) => {
     "permissions": [
       "identity",
       "storage",
+      "scripting", // for InjectService
       ...(!MANIFESTV3 ? HOST_PERMISSIONS : []),
     ],
     ...(MANIFESTV3 ? {

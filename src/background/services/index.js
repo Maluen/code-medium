@@ -5,6 +5,7 @@ import AuthService from './AuthService';
 import GistService from './GistService';
 import OptionsService from './OptionsService';
 import ShortcutsService from './ShortcutsService';
+import InjectService from './InjectService';
 
 const { services, start } = createServices([
   ['rpc', BackgroundRPCService],
@@ -13,6 +14,7 @@ const { services, start } = createServices([
   ['gist', GistService],
   ['options', OptionsService],
   ['shortcuts', ShortcutsService],
+  ['inject', InjectService],
 ]);
 
 export default services;

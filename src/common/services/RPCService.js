@@ -98,7 +98,7 @@ class RPCService {
             }
             return handler;
           })
-          .then(handler => handler(message.data || {}))
+          .then(handler => handler(message.data || {}, message.tabId))
           .then(data => {
             // NOTE: invert message.from and message.to to send back the message
             return this.sendResponse(message.from, message.tabId, message.id, undefined, data);

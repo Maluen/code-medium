@@ -46,13 +46,13 @@ class AppService {
   open() {
     this.el.classList.remove(namespace('hide'));
     document.documentElement.classList.add(namespace('app-open'));
-    this.services.medium.handleAppOpenState();
+    this.services.integration.handleAppOpenState();
   }
 
   close() {
     this.el.classList.add(namespace('hide'));
     document.documentElement.classList.remove(namespace('app-open'));
-    this.services.medium.handleAppOpenState();
+    this.services.integration.handleAppOpenState();
     this.reset();
   }
 

@@ -13,7 +13,7 @@ class ShortcutsService {
     await this.listenForExtensionCommands.start();
   }
 
-  listenForExtensionCommands = makeStartable(async ({ startedPromise }) => {
+  listenForExtensionCommands = makeStartable(({ startedPromise }) => {
     browser.commands.onCommand.addListener(async (command) => {
       await startedPromise;
       if (command === 'medium-create-gist') {

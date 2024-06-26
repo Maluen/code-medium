@@ -1,11 +1,5 @@
 $buttonColor: rgb(0, 171, 108);
 
-.inlineTooltip {
-  &.is-scaled {
-    width: auto !important; // make room for the extra button
-  }
-}
-
 .#{$namespace}-app {
   position: fixed;
   top: 0;
@@ -49,14 +43,25 @@ $buttonColor: rgb(0, 171, 108);
 html.#{$namespace}-app-open {
   overflow: hidden;
 
+  #entry {
+    pointer-events: none !important; // prevent interaction with the editor
+    * {
+      pointer-events: none !important;
+    }
+    .editor-scroll {
+      pointer-events: auto !important; // but still allow scrolling
+    }
+  }
+
   @media (min-width: 1150px) {
     overflow-y: auto;
+    $editorWidth: 740px;
 
     .#{$namespace}-app {
       position: fixed;
       right: 0;
       left: auto;
-      width: calc(100% - 740px);
+      width: calc(100% - #{$editorWidth});
 
       iframe {
         height: 100%;
@@ -64,8 +69,11 @@ html.#{$namespace}-app-open {
       }
     }
 
-    .postArticle-content .sectionLayout--insetColumn {
-      margin: 0; // move the medium editor all the way to the left
+    #entry {
+      // move the medium editor all the way to the left
+      width: $editorWidth;
+      padding: 0 25px;
+      box-sizing: border-box;
     }
 
     .highlightMenu {

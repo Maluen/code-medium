@@ -33,6 +33,10 @@ class SubstackService {
 
     this.bindEvents();
     this.extendCommands();
+
+    this.services.rpc.sendRequest(CONTEXT.background, null, 'inject.function', {
+      name: 'substack_rewrite_xhr',
+    });
   }
 
   bindEvents() {
@@ -54,22 +58,22 @@ class SubstackService {
 
   async extendCommands() {
     const check = () => {
-      const newCommandsEl = document.querySelector('.ProseMirror-menu-dropdown-menu');
+      const newCommandsEl = document.querySelector('.tiptap-menu > div');
       if (newCommandsEl && newCommandsEl !== this.commandsEl) {
         this.commandsEl = newCommandsEl;
-        const buttons = this.commandsEl.querySelectorAll('.ProseMirror-menu-dropdown-item');
-        const buttonEl = buttons[buttons.length - 1].cloneNode(true);
+        const buttons = this.commandsEl.querySelectorAll('button');
+        const buttonEl = buttons[buttons.length - 1].parentElement.cloneNode(true);
         const title = 'Insert Github Gist';
-        buttonEl.children[0].title = title;
-        buttonEl.querySelector('span').innerText = 'Github Gist';
+        buttonEl.children[0].setAttribute('aria-label', title);
+        buttonEl.children[0].setAttribute('title', title);
+        buttonEl.children[0].setAttribute('data-test-id', 'code-medium');
+        buttonEl.children[0].innerHTML = title;
         buttonEl.classList.add(namespace('substack-button'));
-        buttonEl.setAttribute('aria-label', title);
-        buttonEl.setAttribute('data-action', 'inline-menu-gist');
         buttonEl.addEventListener('mousedown', this.handleCreateGistClick);
         this.commandsEl.appendChild(buttonEl);
       }
 
-      const newPostArticleContent = document.querySelector('.postArticle-content');
+      const newPostArticleContent = document.querySelector('[data-testid="editor"]');
       if (newPostArticleContent && newPostArticleContent !== this.postArticleContent) {
         this.postArticleContent = newPostArticleContent;
         this.postArticleContent.addEventListener('mouseup', (e) => {
@@ -99,7 +103,7 @@ class SubstackService {
         this.services.app.isOpen() ? 'false' : 'true'
       );
     }
-  }
+  };
 
   handleCreateGistClick = () => {
     this.services.app.createGist()
@@ -108,7 +112,7 @@ class SubstackService {
         return this.insertGistIntoPost(gist);
       })
       .catch(err => this.handleAppError(err));
-  }
+  };
 
   handleEditGistClick = (gistId, gistName) => {
     this.services.app.editGist(gistId, gistName)
@@ -117,7 +121,7 @@ class SubstackService {
         this.updateGistIntoPost(gist);
       })
       .catch(err => this.handleAppError(err));
-  }
+  };
 
   handleAppError = (err) => {
     if (err instanceof Error && err.message === 'deleted') {
@@ -126,7 +130,7 @@ class SubstackService {
     }
 
     throw err;
-  }
+  };
 
   insertGistIntoPost(gist) {
     const clipboardData = new window.DataTransfer();

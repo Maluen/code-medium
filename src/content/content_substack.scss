@@ -35,8 +35,13 @@ $buttonColor: rgb(0, 171, 108);
 .#{$namespace}-substack-button {
   color: $buttonColor !important;
   border-color: $buttonColor !important;
+
   path {
     fill: $buttonColor !important;
+  }
+
+  button {
+    color: $buttonColor !important;
   }
 }
 

@@ -31,8 +31,11 @@ class SubstackService {
     console.log("substack hey!");
     this.services = services;
 
-    this.bindEvents();
-    this.extendCommands();
+    // Disable UI extension On Firefox since simulated paste doesn't work (insertGistIntoPost)
+    if (process.env.BROWSER !== 'firefox') {
+      this.bindEvents();
+      this.extendCommands();
+    }
 
     this.services.rpc.sendRequest(CONTEXT.background, null, 'inject.function', {
       name: 'substack_rewrite_xhr',

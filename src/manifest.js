@@ -19,7 +19,7 @@ module.exports = (browser, version) => {
     applications: (browser === 'firefox') ? {
       "gecko": {
         "id": config.app.ids.firefox,
-        "strict_min_version": "50.0"
+        "strict_min_version": "128.0" // for browser.scripting.executeScript with world === 'MAIN'
       }
     } : undefined,
     "name": "Code Medium",

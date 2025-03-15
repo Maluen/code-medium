@@ -11,7 +11,8 @@
   "author": "Manuel Dell'Elce",
   "license": "MPL-2.0",
   "engines" : { 
-    "node" : ">=18.18.2"
+    "node" : ">=18.18.2",
+    "yarn": ">=1.22.19"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",

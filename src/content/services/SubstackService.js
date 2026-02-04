@@ -61,7 +61,7 @@ class SubstackService {
 
   async extendCommands() {
     const check = () => {
-      const newCommandsEl = document.querySelector('.tiptap-menu > div');
+      const newCommandsEl = document.querySelector('[role="toolbar"]');
       if (newCommandsEl && newCommandsEl !== this.commandsEl) {
         this.commandsEl = newCommandsEl;
         const buttons = this.commandsEl.querySelectorAll('button');
@@ -70,6 +70,7 @@ class SubstackService {
         buttonEl.children[0].setAttribute('aria-label', title);
         buttonEl.children[0].setAttribute('title', title);
         buttonEl.children[0].setAttribute('data-test-id', 'code-medium');
+        buttonEl.children[0].setAttribute('id', 'extension-code-medium-button');
         buttonEl.children[0].innerHTML = title;
         buttonEl.classList.add(namespace('substack-button'));
         buttonEl.addEventListener('mousedown', this.handleCreateGistClick);

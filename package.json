@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "code-medium",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +10,7 @@
   },
   "author": "Manuel Dell'Elce",
   "license": "MPL-2.0",
-  "engines" : { 
+  "engines" : {
     "node" : ">=18.18.2",
     "yarn": ">=1.22.19"
   },

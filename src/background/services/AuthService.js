@@ -16,14 +16,14 @@ const getAuthUrl = state => 'https://github.com/login/oauth/authorize?' +
   `client_id=${encodeURIComponent(clientId)}&` +
   `scope=${encodeURIComponent(scope)}&` +
   `state=${encodeURIComponent(state)}&` +
-  `redirect_uri=${redirectUrl}`;
+  `redirect_uri=${encodeURIComponent(redirectUrl)}`;
 
 const getAccessTokenUrl = (code, state) => 'https://github.com/login/oauth/access_token?' +
   `client_id=${encodeURIComponent(clientId)}&` +
   `client_secret=${encodeURIComponent(clientSecret)}&` +
   `code=${encodeURIComponent(code)}&` +
   `state=${encodeURIComponent(state)}&` +
-  `redirect_uri=${redirectUrl}`;
+  `redirect_uri=${encodeURIComponent(redirectUrl)}`;
 
 function getAuthCode() {
   const state = uuidv4();
